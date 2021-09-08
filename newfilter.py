@@ -276,7 +276,7 @@ def main():
     files = sc.textFile(raw_root + "2018-*.json.gz")
     text = files.map(lambda line: extract_emoji_hashtag(line, regex))
     df = text.toDF()
-    df.write.save('2018_year.parquet')
+    df.write.save('2018_year_pid.parquet')
     print('sucessfully saved')
 
     sc.stop()
@@ -454,5 +454,5 @@ def analysis_DF():
     
     
 if __name__ == '__main__':
-    testsmall()
+    main()
 
