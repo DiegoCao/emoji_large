@@ -312,7 +312,7 @@ def testsmall():
     files = sc.textFile(raw_root + "2018-01-01*.json.gz")
     text = files.map(lambda line: extract_emoji_hashtag(line, regex))
     df = text.toDF()
-    df.write.save('testday_v1.parquet')
+    df.write.save('testday_v2.parquet')
     print('sucessfully saved')
 
     sc.stop()
@@ -397,21 +397,21 @@ def analysis_DF():
     spark.sparkContext.setLogLevel('WARN')
     raw_root = "/user/hangrui/"
     
-    df = spark.read.parquet("/user/hangrui/2018_year.parquet")
+    df = spark.read.parquet("/user/hangrui/2018_year_pid.parquet")
     # .map(lambda x: line2json(x))\
-    df = df.filter(df.has_emoji == True)
+    # df = df.filter(df.has_emoji == True)
     
-    df.show()
-    # udf_ = udf(calLen, IntegerType())
-    # df = df.withColumn("num_emojis", udf_("emojis"))
-    groupdf = df.groupby('aid').agg(func.collect_list('emojis').alias('repo_emojis'))
-    udf3 = udf(getSetvar, FloatType())
+    # df.show()
+    # # udf_ = udf(calLen, IntegerType())
+    # # df = df.withColumn("num_emojis", udf_("emojis"))
+    # groupdf = df.groupby('id').agg(func.collect_list('emojis').alias('repo_emojis'))
+    # udf3 = udf(getSetvar, FloatType())
     
 
-    groupdf = groupdf.withColumn("repo_emoji_var", udf3("repo_emojis"))
-    groupdf.drop("repo_emojis")
-    groupdf.show()
-    groupdf.write.format("csv").option("header", "true").save("/user/hangrui/repo_event_types_var_fix2")
+    # groupdf = groupdf.withColumn("repo_emoji_var", udf3("repo_emojis"))
+    # groupdf.drop("repo_emojis")
+    # groupdf.show()
+    # groupdf.write.format("csv").option("header", "true").save("/user/hangrui/repo_event_types_var_fix2")
     
     # udf2 = udf(getSetlen, IntegerType())
     # groupdf = groupdf.withColumn("emoji_cnt", udf2("user_emojis"))
@@ -454,5 +454,5 @@ def analysis_DF():
     
     
 if __name__ == '__main__':
-    main()
+    testsmall()
 
