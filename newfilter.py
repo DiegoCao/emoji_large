@@ -398,10 +398,10 @@ def analysis_DF():
     raw_root = "/user/hangrui/"
     
     df = spark.read.parquet("/user/hangrui/2018_year_pid.parquet")
+    # df = df.filter(df.)
     # .map(lambda x: line2json(x))\
-    # df = df.filter(df.has_emoji == True)
-    
-    # df.show()
+    df = df.filter(df.has_emoji == True)
+    df.show()
     # # udf_ = udf(calLen, IntegerType())
     # # df = df.withColumn("num_emojis", udf_("emojis"))
     # groupdf = df.groupby('id').agg(func.collect_list('emojis').alias('repo_emojis'))
@@ -454,5 +454,4 @@ def analysis_DF():
     
     
 if __name__ == '__main__':
-    testsmall()
-
+    analysis_DF()
