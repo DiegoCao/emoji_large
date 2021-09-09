@@ -385,6 +385,8 @@ def getWorkratio(lis):
 
 
     
+def udffilter():
+    df = 
 
 def analysis_DF():
     
@@ -401,10 +403,12 @@ def analysis_DF():
     # df = df.filter(df.)
     # .map(lambda x: line2json(x))\
     df = df.filter(df.has_emoji == True)
-    df = df.filter(df.prid.isNotNull())
+    df = df.filter(df.commentid.isNotNull())
 
     df.show()
-    df.write.save("/user/hangrui/pr_emoji.parquet")
+    df.write.save("/user/hangrui/comment_emoji.parquet")
+
+
     # udf_ = udf(calLen, IntegerType())
     # df = df.withColumn("num_emojis", udf_("emojis"))
     # groupdf = df.groupby('id').agg(func.collect_list('emojis').alias('repo_emojis'))
