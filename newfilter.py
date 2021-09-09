@@ -385,8 +385,14 @@ def getWorkratio(lis):
 
 
     
-def udffilter():
-    df = 
+def udffilter(x):
+    
+    maxval = -1
+    for i in x:
+        if len(i) > maxval:
+            maxval = len(i)
+    
+    return maxval
 
 def analysis_DF():
     
@@ -402,14 +408,36 @@ def analysis_DF():
     df = spark.read.parquet("/user/hangrui/2018_year_pid.parquet")
     # df = df.filter(df.)
     # .map(lambda x: line2json(x))\
-    df = df.filter(df.has_emoji == True)
-    df = df.filter(df.commentid.isNotNull())
+    df_old= df.filter(df.has_emoji == True)
+    df = df_old.filter(df.commentid.isNotNull())
 
     df.show()
     df.write.save("/user/hangrui/comment_emoji.parquet")
+    commentdf = df.groupby('commentid').agg(func.collect_list('emojis').alias('comment_emojis'))
 
 
-    # udf_ = udf(calLen, IntegerType())
+    udf_ = udf(udffilter, IntegerType())
+
+    commentdf = commentdf.withColumn("emojicnt", udf_("comment_emojis"))
+    selected_comment = df.select(
+        'rid', 'aid', 'emojicnt', 'commentid'
+    )
+
+
+
+    df = df_old.filter(df.prid.isNotNull())
+    df.show()
+    
+    prdf = df.groupby('prid').agg(func.collect_list('emojis').alias('pr_emojis'))
+    prdf = prdf.withColumn("emojicnt", udf_("pr_emojis"))
+    selected_pr = df.select('rid', 'aid', 'emojicnt', 'prid')
+
+    selected_comment.write.format("csv").option("header", "true").save("user/hangrui/new/comment_cnt")
+    selected_pr.write.format("csv").option("header", "true").save("user/hangrui/new/pr_cnt")
+    
+
+
+
     # df = df.withColumn("num_emojis", udf_("emojis"))
     # groupdf = df.groupby('id').agg(func.collect_list('emojis').alias('repo_emojis'))
     # udf3 = udf(getSetvar, FloatType())
