@@ -401,7 +401,7 @@ def analysis_DF():
     # df = df.filter(df.)
     # .map(lambda x: line2json(x))\
     df = df.filter(df.has_emoji == True)
-    df = df.filter("commentid!=null")
+    df = df.filter(df.prid.isNotNull())
 
     df.show()
     df.write.format("csv").option("header", "true").save("/user/hangrui/pr_emoji")
