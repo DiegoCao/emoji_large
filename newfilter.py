@@ -214,16 +214,16 @@ def extract_emoji_hashtag(emoji_json, regex):
                 # json_formatted_str = json.dumps(data, indent=2)
                 # print(json_formatted_str)
         msg = pay_load['issue']['body']
-        dic["issueid"] = pay_load['issue']['id']
+        # dic["issueid"] = pay_load['issue']['id']
     elif dtype == "IssueCommentEvent":
         msg = pay_load['comment']['body']
-        dic["issueid"] = pay_load['issue']['id']
-        dic["commentid"]=pay_load['comment']['id']
+        # dic["issueid"] = pay_load['issue']['id']
+        # dic["commentid"]=pay_load['comment']['id']
 
     elif dtype == "PullRequestEvent":
         title = pay_load['pull_request']['title']
         body = pay_load['pull_request']['body']
-        dic['prid'] = pay_load['pull_request']['id']
+        # dic['prid'] = pay_load['pull_request']['id']
         if title == None:
             title = ""
         elif body == None:
@@ -234,10 +234,10 @@ def extract_emoji_hashtag(emoji_json, regex):
         
     elif dtype == "PullRequestReviewCommentEvent":
         msg = pay_load['comment']['body']
-        dic['commentid']=pay_load['comment']['id']
+        # dic['commentid']=pay_load['comment']['id']
     elif dtype == "CommitCommentEvent":
         msg = pay_load['comment']['body']
-        dic["commentid"]=pay_load['comment']['id']
+        # dic["commentid"]=pay_load['comment']['id']
     elif dtype == "ReleaseEvent":
         msg = pay_load['release']['body']
         
@@ -312,7 +312,7 @@ def testsmall():
     files = sc.textFile(raw_root + "2018-01-01*.json.gz")
     text = files.map(lambda line: extract_emoji_hashtag(line, regex))
     df = text.toDF()
-    df.write.save('testday_v2.parquet')
+    df.write.save('testday_v2.parquette')
     print('sucessfully saved')
 
     sc.stop()
