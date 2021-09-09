@@ -401,6 +401,8 @@ def analysis_DF():
     # df = df.filter(df.)
     # .map(lambda x: line2json(x))\
     df = df.filter(df.has_emoji == True)
+    df = df.filter(df.pid != "null" )
+
     df.show()
     # # udf_ = udf(calLen, IntegerType())
     # # df = df.withColumn("num_emojis", udf_("emojis"))
@@ -451,6 +453,7 @@ def analysis_DF():
 #     files = spark.read.parquet("/user/hangrui/testday.parquet")
     
 #     df = df.groupBy('rid').agg({''})
+    sc.stop()
     
     
 if __name__ == '__main__':
