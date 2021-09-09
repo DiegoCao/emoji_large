@@ -412,7 +412,7 @@ def analysis_DF():
     df = df_old.filter(df.commentid.isNotNull())
 
     df.show()
-    df.write.save("/user/hangrui/comment_emoji.parquet")
+    # df.write.save("/user/hangrui/comment_emoji.parquet")
     commentdf = df.groupby('commentid').agg(func.collect_list('emojis').alias('comment_emojis'))
 
 
