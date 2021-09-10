@@ -413,13 +413,13 @@ def analysis_DF():
 
     df.show()
     # # df.write.save("/user/hangrui/comment_emoji.parquet")
-    # commentdf = df.groupby('commentid').agg(func.collect_list('emojis').alias('comment_emojis'))
+    commentdf = df.groupby('commentid').agg(func.collect_list('emojis').alias('comment_emojis'))
 
 
-    # udf_ = udf(udffilter, IntegerType())
+    udf_ = udf(udffilter, IntegerType())
 
-    # commentdf = commentdf.withColumn("emojicnt", udf_("comment_emojis"))
-    # commentdf.show()
+    commentdf = commentdf.withColumn("emojicnt", udf_("comment_emojis"))
+    commentdf.show()
     # selected_comment = commentdf.select(
     #   'emojicnt', 'commentid'
     # )
