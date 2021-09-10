@@ -409,6 +409,7 @@ def analysis_DF():
     # df = df.filter(df.)
     # .map(lambda x: line2json(x))\
     df_old= df.filter(df.has_emoji == True)
+    
     df = df_old.filter(df.commentid.isNotNull())
 
     df.show()
@@ -419,6 +420,7 @@ def analysis_DF():
     udf_ = udf(udffilter, IntegerType())
 
     commentdf = commentdf.withColumn("emojicnt", udf_("comment_emojis"))
+    commentdf.show()
     selected_comment = commentdf.select(
         'rid', 'aid', 'emojicnt', 'commentid'
     )
@@ -430,6 +432,7 @@ def analysis_DF():
     
     prdf = df.groupby('prid').agg(func.collect_list('emojis').alias('pr_emojis'))
     prdf = prdf.withColumn("emojicnt", udf_("pr_emojis"))
+    prdf.show()
     selected_pr = prdf.select('rid', 'aid', 'emojicnt', 'prid')
 
     selected_comment.write.format("csv").option("header", "true").save("user/hangrui/new/comment_cnt")
