@@ -388,11 +388,12 @@ def getWorkratio(lis):
 def udffilter(x):
     
     maxval = -1
+    emoji_set = set()
     for i in x:
-        if len(i) > maxval:
-            maxval = len(i)
+        for j in i:
+            emoji_set.add(j)
     
-    return maxval
+    return len(emoji_set)
 
 def analysis_DF():
     
@@ -421,18 +422,14 @@ def analysis_DF():
     commentdf = commentdf.withColumn("emojicnt", udf_("comment_emojis"))
     commentdf.show()
     selected_comment = commentdf.select('commentid', 'emojicnt')
-
-
-
     # df = df_old.filter(df.prid.isNotNull())
     # df.show()
-    
     # prdf = df.groupby('prid').agg(func.collect_list('emojis').alias('pr_emojis'))
     # prdf = prdf.withColumn("emojicnt", udf_("pr_emojis"))
     # prdf.show()
     # selected_pr = prdf.select('emojicnt', 'prid')
 
-    selected_comment.write.format("csv").option("header", "true").save("/user/hangrui/new/comment_cnt/")
+    selected_comment.write.format("csv").option("header", "true").save("/user/hangrui/new/commenttype_cnt/")
     # selected_pr.write.format("csv").option("header", "true").save("/user/hangrui/new/pr_cnt")
     
     # selectdf = df_old.select('rid', 'aid', 'commentid', 'prid')
@@ -455,9 +452,6 @@ def analysis_DF():
     # joindf = getgroupJoin(df, groupdf, 'emoji_cnt', 'repoavguser_emojis_fix')
     # # # # joindf = joindf.groupBy('rid').agg(func.mean('count').alias('repoavguser_events_fix'))
     # joindf.write.format("csv").option("header", "true").save("/user/hangrui/repoavguser_emojis_fix")
-
-
-    
         
     # df2 = groupdf.select('aid','user_avg_emoji')
     # joindf = df1.join(df2, df1.aid == df2.aid, 'outer')
@@ -489,6 +483,10 @@ def analysis_DF():
 #     df = df.groupBy('rid').agg({''})
     sc.stop()
     
+
+
+
+
     
 if __name__ == '__main__':
     analysis_DF()

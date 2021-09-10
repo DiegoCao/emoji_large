@@ -263,7 +263,6 @@ def applyFunc1(x):
 
 def main():
     
-    
 
     sc_name = "Filter Test"
     sc = SparkContext(conf=SparkConf().setAppName(sc_name))
