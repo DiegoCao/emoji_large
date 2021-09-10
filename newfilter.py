@@ -408,46 +408,46 @@ def analysis_DF():
     df = spark.read.parquet("/user/hangrui/2018_year_pid.parquet")
     # df = df.filter(df.)
     # .map(lambda x: line2json(x))\
-    df_old= df.filter(df.has_emoji == True)
+    # df_old= df.filter(df.has_emoji == True)
     
-    df = df_old.filter(df.commentid.isNotNull())
+    # df = df_old.filter(df.commentid.isNotNull())
 
-    df.show()
-    # df.write.save("/user/hangrui/comment_emoji.parquet")
-    commentdf = df.groupby('commentid').agg(func.collect_list('emojis').alias('comment_emojis'))
-
-
-    udf_ = udf(udffilter, IntegerType())
-
-    commentdf = commentdf.withColumn("emojicnt", udf_("comment_emojis"))
-    commentdf.show()
-    selected_comment = commentdf.select(
-      'emojicnt', 'commentid'
-    )
+    # df.show()
+    # # df.write.save("/user/hangrui/comment_emoji.parquet")
+    # commentdf = df.groupby('commentid').agg(func.collect_list('emojis').alias('comment_emojis'))
 
 
+    # udf_ = udf(udffilter, IntegerType())
 
-    df = df_old.filter(df.prid.isNotNull())
-    df.show()
+    # commentdf = commentdf.withColumn("emojicnt", udf_("comment_emojis"))
+    # commentdf.show()
+    # selected_comment = commentdf.select(
+    #   'emojicnt', 'commentid'
+    # )
+
+
+
+    # df = df_old.filter(df.prid.isNotNull())
+    # df.show()
     
-    prdf = df.groupby('prid').agg(func.collect_list('emojis').alias('pr_emojis'))
-    prdf = prdf.withColumn("emojicnt", udf_("pr_emojis"))
-    prdf.show()
-    selected_pr = prdf.select('emojicnt', 'prid')
+    # prdf = df.groupby('prid').agg(func.collect_list('emojis').alias('pr_emojis'))
+    # prdf = prdf.withColumn("emojicnt", udf_("pr_emojis"))
+    # prdf.show()
+    # selected_pr = prdf.select('emojicnt', 'prid')
 
-    selected_comment.write.format("csv").option("header", "true").save("/user/hangrui/new/comment_cnt")
-    selected_pr.write.format("csv").option("header", "true").save("/user/hangrui/new/pr_cnt")
+    # selected_comment.write.format("csv").option("header", "true").save("/user/hangrui/new/comment_cnt")
+    # selected_pr.write.format("csv").option("header", "true").save("/user/hangrui/new/pr_cnt")
     
-    selectdf = df_old.select('rid', 'aid', 'commentid', 'prid')
-    selectdf.write.format("csv").option("header", "true").save("/user/hangrui/new/idmap")
+    # selectdf = df_old.select('rid', 'aid', 'commentid', 'prid')
+    # selectdf.write.format("csv").option("header", "true").save("/user/hangrui/new/idmap")
 
 
-    # df = df.withColumn("num_emojis", udf_("emojis"))
-    # groupdf = df.groupby('id').agg(func.collect_list('emojis').alias('repo_emojis'))
-    # udf3 = udf(getSetvar, FloatType())
+    # # df = df.withColumn("num_emojis", udf_("emojis"))
+    # # groupdf = df.groupby('id').agg(func.collect_list('emojis').alias('repo_emojis'))
+    # # udf3 = udf(getSetvar, FloatType())
     
 
-    # groupdf = groupdf.withColumn("repo_emoji_var", udf3("repo_emojis"))
+    # # groupdf = groupdf.withColumn("repo_emoji_var", udf3("repo_emojis"))
     # groupdf.drop("repo_emojis")
     # groupdf.show()
     # groupdf.write.format("csv").option("header", "true").save("/user/hangrui/repo_event_types_var_fix2")
