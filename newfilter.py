@@ -420,9 +420,7 @@ def analysis_DF():
 
     commentdf = commentdf.withColumn("emojicnt", udf_("comment_emojis"))
     commentdf.show()
-    # selected_comment = commentdf.select(
-    #   'emojicnt', 'commentid'
-    # )
+    selected_comment = commentdf.select('commentid', 'emojicnt')
 
 
 
@@ -434,7 +432,7 @@ def analysis_DF():
     # prdf.show()
     # selected_pr = prdf.select('emojicnt', 'prid')
 
-    # selected_comment.write.format("csv").option("header", "true").save("/user/hangrui/new/comment_cnt")
+    selected_comment.write.format("csv").option("header", "true").save("/user/hangrui/new/comment_cnt/")
     # selected_pr.write.format("csv").option("header", "true").save("/user/hangrui/new/pr_cnt")
     
     # selectdf = df_old.select('rid', 'aid', 'commentid', 'prid')
