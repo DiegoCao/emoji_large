@@ -435,11 +435,11 @@ def analysis_DF():
     prdf.show()
     selected_pr = prdf.select('emojicnt', 'prid')
 
-    selected_comment.write.format("csv").option("header", "true").save("user/hangrui/new/comment_cnt")
-    selected_pr.write.format("csv").option("header", "true").save("user/hangrui/new/pr_cnt")
+    selected_comment.write.format("csv").option("header", "true").save("/user/hangrui/new/comment_cnt")
+    selected_pr.write.format("csv").option("header", "true").save("/user/hangrui/new/pr_cnt")
     
     selectdf = df_old.select('rid', 'aid', 'commentid', 'prid')
-    selectdf.write.format("csv").option("header", "true").save("user/hangrui/new/idmap")
+    selectdf.write.format("csv").option("header", "true").save("/user/hangrui/new/idmap")
 
 
     # df = df.withColumn("num_emojis", udf_("emojis"))
