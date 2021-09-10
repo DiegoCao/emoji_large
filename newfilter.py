@@ -422,7 +422,7 @@ def analysis_DF():
     commentdf = commentdf.withColumn("emojicnt", udf_("comment_emojis"))
     commentdf.show()
     selected_comment = commentdf.select(
-        'rid', 'aid', 'emojicnt', 'commentid'
+      'emojicnt', 'commentid'
     )
 
 
@@ -433,12 +433,13 @@ def analysis_DF():
     prdf = df.groupby('prid').agg(func.collect_list('emojis').alias('pr_emojis'))
     prdf = prdf.withColumn("emojicnt", udf_("pr_emojis"))
     prdf.show()
-    selected_pr = prdf.select('rid', 'aid', 'emojicnt', 'prid')
+    selected_pr = prdf.select('emojicnt', 'prid')
 
     selected_comment.write.format("csv").option("header", "true").save("user/hangrui/new/comment_cnt")
     selected_pr.write.format("csv").option("header", "true").save("user/hangrui/new/pr_cnt")
     
-
+    selectdf = df_old.select('rid', 'aid', 'commentid', 'prid')
+    selectdf.write.format("csv").option("header", "true").save("user/hangrui/new/idmap")
 
 
     # df = df.withColumn("num_emojis", udf_("emojis"))
