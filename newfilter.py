@@ -408,22 +408,22 @@ def analysis_DF():
     df = spark.read.parquet("/user/hangrui/2018_year_pid.parquet")
     # df = df.filter(df.)
     # .map(lambda x: line2json(x))\
-    # df_old= df.filter(df.has_emoji == True)
+    df_old= df.filter(df.has_emoji == True)
     
-    # df = df_old.filter(df.commentid.isNotNull())
+    df = df_old.filter(df.commentid.isNotNull())
 
-    # df.show()
+    df.show()
     # # df.write.save("/user/hangrui/comment_emoji.parquet")
-    # commentdf = df.groupby('commentid').agg(func.collect_list('emojis').alias('comment_emojis'))
+    commentdf = df.groupby('commentid').agg(func.collect_list('emojis').alias('comment_emojis'))
 
 
-    # udf_ = udf(udffilter, IntegerType())
+    udf_ = udf(udffilter, IntegerType())
 
-    # commentdf = commentdf.withColumn("emojicnt", udf_("comment_emojis"))
-    # commentdf.show()
-    # selected_comment = commentdf.select(
-    #   'emojicnt', 'commentid'
-    # )
+    commentdf = commentdf.withColumn("emojicnt", udf_("comment_emojis"))
+    commentdf.show()
+    selected_comment = commentdf.select(
+      'emojicnt', 'commentid'
+    )
 
 
 
@@ -435,7 +435,7 @@ def analysis_DF():
     # prdf.show()
     # selected_pr = prdf.select('emojicnt', 'prid')
 
-    # selected_comment.write.format("csv").option("header", "true").save("/user/hangrui/new/comment_cnt")
+    selected_comment.write.format("csv").option("header", "true").save("/user/hangrui/new/comment_cnt")
     # selected_pr.write.format("csv").option("header", "true").save("/user/hangrui/new/pr_cnt")
     
     # selectdf = df_old.select('rid', 'aid', 'commentid', 'prid')
