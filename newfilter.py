@@ -410,7 +410,9 @@ def analysis_DF():
 
     df = df.groupby('rid').count()
 
+
     df.show()
+    df.write.format("csv").option("header", "true").save("/user/hangrui/new/rid_event")
 
     # df_old= df.filter(df.has_emoji == True)
     
