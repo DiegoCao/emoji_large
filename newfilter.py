@@ -408,11 +408,11 @@ def analysis_DF():
     
     df = spark.read.parquet("/user/hangrui/2018_year_pid.parquet")
 
-    df = df.groupby('rid').count()
+    df = df.groupby('aid').count()
 
 
     df.show()
-    df.write.format("csv").option("header", "true").save("/user/hangrui/new/rid_event")
+    df.write.format("csv").option("header", "true").save("/user/hangrui/new/aid_event")
 
     # df_old= df.filter(df.has_emoji == True)
     
