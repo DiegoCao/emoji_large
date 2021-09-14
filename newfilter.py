@@ -395,6 +395,8 @@ def udffilter(x):
     
     return len(emoji_set)
 
+from pyspark.sql.functions import countDistinct
+
 def analysis_DF():
     
     sc_name = "process"
@@ -408,11 +410,11 @@ def analysis_DF():
     
     df = spark.read.parquet("/user/hangrui/2018_year_pid.parquet")
 
-    df = df.groupby('aid').count()
+    df = df.groupby('rid').agg(countDistinct('pid'))
 
 
     df.show()
-    df.write.format("csv").option("header", "true").save("/user/hangrui/new/aid_event")
+    df.write.format("csv").option("header", "true").save("/user/hangrui/new/rid_post_distinct")
 
     # df_old= df.filter(df.has_emoji == True)
     
