@@ -416,8 +416,9 @@ def analysis_DF():
 
     groupdf = piddf.join(groupdf,groupdf.pid==piddf.pid, 'outer')
 
-    df.show()
-    df.write.format("csv").option("header", "true").save("/user/hangrui/new/rid_post_distinct")
+    groupdf.write.format("csv").option("header", "true").save("/user/hangrui/new/rid_post_distinct_new")
+    # df.show()
+    # df.write.format("csv").option("header", "true").save("/user/hangrui/new/rid_post_distinct")
 
     # df_old= df.filter(df.has_emoji == True)
     
