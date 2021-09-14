@@ -410,8 +410,11 @@ def analysis_DF():
     
     df = spark.read.parquet("/user/hangrui/2018_year_pid.parquet")
 
-    df = df.groupby('rid').agg(countDistinct('pid'))
+    groupdf = df.groupby('rid').agg(countDistinct('pid'))
 
+    piddf = df.select('pid', 'has_emoji').distinct
+
+    groupdf = piddf.join(groupdf,groupdf.pid==piddf.pid, 'outer')
 
     df.show()
     df.write.format("csv").option("header", "true").save("/user/hangrui/new/rid_post_distinct")
