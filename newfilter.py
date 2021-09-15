@@ -408,18 +408,15 @@ def analysis_DF():
     spark = SparkSession(sc)
     spark.sparkContext.setLogLevel('WARN')
     raw_root = "/user/hangrui/"
-    
     df = spark.read.parquet("/user/hangrui/2018_year_pid.parquet")
 
     groupdf = df.groupby('rid').agg(countDistinct('prid'))
-    piddf = df.select('prid', 'has_emoji').distinct()
+    
 
-    comment_df = df.groupby('rid').agg(countDistinct('prid'), countDistinct('issueid'), countDistinct('commentid'))
-
-
-    groupdf = piddf.join(groupdf,groupdf.prid==piddf.prid, 'outer')
-
-    groupdf.write.format("csv").option("header", "true").save("/user/hangrui/new/rid_prid_distinct_new")
+    # piddf = df.select('prid', 'has_emoji').distinct()
+    final_df = df.groupby('rid').agg(countDistinct('prid'), countDistinct('issueid'), countDistinct('commentid'))
+    # groupdf = piddf.join(groupdf,groupdf.prid==piddf.prid, 'outer')
+    groupdf.write.format("csv").option("header", "true").save("/user/hangrui/new/rid_cnt_distinct")
     
     # df.show()
     # df.write.format("csv").option("header", "true").save("/user/hangrui/new/rid_post_distinct")
