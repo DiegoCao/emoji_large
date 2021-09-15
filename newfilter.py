@@ -218,7 +218,7 @@ def extract_emoji_hashtag(emoji_json, regex):
         dic["issueid"] = pay_load['issue']['id']
     elif dtype == "IssueCommentEvent":
         msg = pay_load['comment']['body']
-        dic["issueid"] = pay_load['issue']['id']
+        # dic["issueid"] = pay_load['issue']['id']
         dic["commentid"]=pay_load['comment']['id']
 
     elif dtype == "PullRequestEvent":
@@ -277,7 +277,7 @@ def main():
     files = sc.textFile(raw_root + "2018-*.json.gz")
     text = files.map(lambda line: extract_emoji_hashtag(line, regex))
     df = text.toDF()
-    df.write.save('2018_year_pid.parquet')
+    df.write.save('2018_year_pid_v2.parquet')
     print('sucessfully saved')
 
     sc.stop()
