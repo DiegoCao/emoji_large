@@ -208,22 +208,23 @@ def extract_emoji_hashtag(emoji_json, regex):
         msg = ""
         for commit in pay_load['commits']:
             msg += commit['message']
+        
     elif dtype == "CreateEvent":
         msg = pay_load['description']
     elif dtype == "IssuesEvent":
                 # json_formatted_str = json.dumps(data, indent=2)
                 # print(json_formatted_str)
         msg = pay_load['issue']['body']
-        # dic["issueid"] = pay_load['issue']['id']
+        dic["issueid"] = pay_load['issue']['id']
     elif dtype == "IssueCommentEvent":
         msg = pay_load['comment']['body']
-        # dic["issueid"] = pay_load['issue']['id']
-        # dic["commentid"]=pay_load['comment']['id']
+        dic["issueid"] = pay_load['issue']['id']
+        dic["commentid"]=pay_load['comment']['id']
 
     elif dtype == "PullRequestEvent":
         title = pay_load['pull_request']['title']
         body = pay_load['pull_request']['body']
-        # dic['prid'    ] = pay_load['pull_request']['id']
+        dic['prid'] = pay_load['pull_request']['id']
         if title == None:
             title = ""
         elif body == None:
@@ -234,10 +235,10 @@ def extract_emoji_hashtag(emoji_json, regex):
         
     elif dtype == "PullRequestReviewCommentEvent":
         msg = pay_load['comment']['body']
-        # dic['commentid']=pay_load['comment']['id']
+        dic['commentid']=pay_load['comment']['id']
     elif dtype == "CommitCommentEvent":
         msg = pay_load['comment']['body']
-        # dic["commentid"]=pay_load['comment']['id']
+        dic["commentid"]=pay_load['comment']['id']
     elif dtype == "ReleaseEvent":
         msg = pay_load['release']['body']
         
@@ -411,8 +412,10 @@ def analysis_DF():
     df = spark.read.parquet("/user/hangrui/2018_year_pid.parquet")
 
     groupdf = df.groupby('rid').agg(countDistinct('prid'))
+    piddf = df.select('prid', 'has_emoji').distinct()
 
-    piddf = df.select('prid', 'has_emoji').distinct
+    comment_df = df.groupby('rid').agg(countDistinct('prid'), countDistinct('issueid'), countDistinct('commentid'))
+
 
     groupdf = piddf.join(groupdf,groupdf.prid==piddf.prid, 'outer')
 
