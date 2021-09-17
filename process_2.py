@@ -53,11 +53,11 @@ if __name__ == "__main__":
 
     df_event_cnt = df_old.groupby('rid').count().withColumnRenamed('count(rid)', 'repoeventcnt')
     df_event_cnt.show()
-    df_event_cnt.write.format("csv").option("header", "true").save("/user/hangrui/new/dfeventcnt")
+    # df_event_cnt.write.format("csv").option("header", "true").save("/user/hangrui/new/dfeventcnt")
 
     # dfusers = df_old.groupby('rid').a
     dfusers = df_old.groupby('rid').agg(countDistinct("aid").alias("repouserscnt"))
-    dfusers.write.format("csv").option("header", "true").save("/user/hangrui/new/dfusers")
+    # dfusers.write.format("csv").option("header", "true").save("/user/hangrui/new/dfusers")
 
 
 
