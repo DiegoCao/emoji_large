@@ -88,12 +88,8 @@ if __name__ == "__main__":
     selected_pr.createOrReplaceTempView("SPR")
     selected_comment.createOrReplaceTempView("SCOMMENT")
     selected_comment.show()
-    res = spark.sql("""select * from DFMAP d, SISSUE i, SPR p, SCOMMENT c 
-                    left join 
-                # where (d.issueid == i.issueid and d.commentid == null ) and 
-                # d.prid == p.prid and 
-                # d.commentid == c.commentid
-            """)    
+
+   
     res = dfmap.join(selected_pr, selected_pr["prid"]== dfmap["prid"], 'outer')\
                 .join(selected_comment, selected_comment["commentid"]==dfmap["commentid"], 'outer')\
                     .join(selected_issue, selected_issue["issueid"]==dfmap["issueid"], 'outer')
@@ -108,12 +104,16 @@ if __name__ == "__main__":
 
     dfcount = dfcount.join(df_event_cnt, df_event_cnt['rid']==dfcount['rid'])
     dfcount = dfcount.join(dfusers, dfusers['rid']==dfcount['rid'])
-    
+
     # dfcount
     #  
     dfcount.show()
 
-
+    res = spark.sql("""select * from DFMAP d
+                    left outer join SISSUE i on i.issueid == d.issueid and
+                    left outer join SPR p on p.prid == d.prid and
+                    left outer join SCOMMENT c on c.commentid == d.commentid
+                    """)
     res.show()
     # dfcount.
 
