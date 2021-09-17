@@ -5,7 +5,7 @@ import re
 import io
 from collections import namedtuple, Counter
 from pyspark.sql import SparkSession
-from pyspark.sql.functions import udf
+from pyspark.sql.functions import udf, countDistinct
 from pyspark.sql.types import IntegerType, FloatType
 
 def udffilter(x):
@@ -27,7 +27,7 @@ def getSetlen(lis):
         
     return len(eset)/len(lis)
 
-
+import pyspark.sql.functions as func
 
 if __name__ == "__main__":
     sc_name = "process"
@@ -40,12 +40,14 @@ if __name__ == "__main__":
     df_old = spark.read.parquet("/user/hangrui/2018_year_pid_v2.parquet")
     df = spark.read.parquet("/user/hangrui/2018_year_pid_v2.parquet")
 
+
     df = df.filter(df.has_emoji == True)
-    df_comment = df.filter(df.commentid.isNotNull())
-    df_issue = df.filter(df.issueid.isNotNull()&df.commentid.isNull())
-    df_pr = df.filter(df.prid.isNotNull())
-    
+    df_comment = df.filter(df.commentid.isNotNull()).groupby("commentid").agg(func.collect_list('emojis').alias('comment_emojis'))
+    df_issue = df.filter(df.issueid.isNotNull()&df.commentid.isNull()).groupby("issueid").agg(func.collect_list('emojis').alias('issue_emojis'))
+    df_pr = df.filter(df.prid.isNotNull()).groupby("prid").agg(func.collect_list('emojis').alias('pr_emojis'))
+
     udf_ = udf(getSetlen, IntegerType())
+
 
     commentdf = df_comment.withColumn("commentemojicnt", udf_("comment_emojis"))
     selected_comment = commentdf.select('commentid', 'commentemojicnt')
@@ -67,6 +69,13 @@ if __name__ == "__main__":
                 d.prid == p.prid and 
                 d.commentid == c.commentid
             """)    
+    selected_comment.createOrReplaceTempView("RES")
+
+    dfcount = res.groupby("rid").agg(countDistinct("issueemojicnt"), countDistinct("commentemojicnt"), countDistinct("premojicnt"))
+
+    dfusers = df_old.groupby("rid").agg(countDistinct("aid"))
+
+
     res.show()
 
     
