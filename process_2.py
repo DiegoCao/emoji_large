@@ -27,6 +27,18 @@ def getSetlen(lis):
         
     return len(eset)/len(lis)
 
+import numpy as np
+def getSetVar(lis):
+    edict = dict()
+    for arr in lis:
+        for emoj in arr:
+            if emoj not in edict:
+                edict[emoj] = 0
+            edict[emoj] += 1
+
+    
+    return np.var()
+
 import pyspark.sql.functions as func
 
 if __name__ == "__main__":
@@ -42,10 +54,13 @@ if __name__ == "__main__":
 
     df_event_cnt = df_old.groupby('rid').count().withColumnRenamed('count(rid)', 'repoeventcnt')
     df_event_cnt.show()
-    df_ads = df_old.groupby('rid').agg(countDistinct("aid").alias("repouserscnt"), countDistinct('prid').alias('repopids'), countDistinct('issueid').alias('repoissueids'), countDistinct('commentid').alias('repocommentids'))
+    # df_ads = df_old.groupby('rid').agg(countDistinct("aid").alias("repouserscnt"), countDistinct('prid').alias('repopids'), countDistinct('issueid').alias('repoissueids'), countDistinct('commentid').alias('repocommentids'), \
+        # countDistinct(func.when(col('prid')!=null)))
 
 
-    df_ads.show()
+
+
+    # df_ads.show()
 
 
 
@@ -71,12 +86,12 @@ if __name__ == "__main__":
     selected_pr.createOrReplaceTempView("SPR")
     selected_comment.createOrReplaceTempView("SCOMMENT")
     selected_comment.show()
-    res = spark.sql("""select * from DFMAP d, SISSUE i, SPR p, SCOMMENT c 
-                    left join 
-                # where (d.issueid == i.issueid and d.commentid == null ) and 
-                # d.prid == p.prid and 
-                # d.commentid == c.commentid
-            """)    
+    # res = spark.sql("""select * from DFMAP d, SISSUE i, SPR p, SCOMMENT c 
+    #                 left join 
+    #             # where (d.issueid == i.issueid and d.commentid == null ) and 
+    #             # d.prid == p.prid and 
+    #             # d.commentid == c.commentid
+    #         """)    
     res = dfmap.join(selected_pr, selected_pr.prid==dfmap.prid, 'outer')\
                 .join(selected_comment, selected_comment.commentid==dfmap.commentid, 'outer')\
                     .join(selected_issue, selected_issue.issueid==dfmap.issueid, 'outer')
