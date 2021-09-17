@@ -104,7 +104,7 @@ if __name__ == "__main__":
 
     dfcount = res.groupby("rid").agg(sum("issueemojicnt").alias("issueemojitotal"), sum("commentemojicnt").alias("commentemojitotal"), sum("premojicnt").alias("premojitotal"))
 
-
+    dfcount.show()
 
 
     res.show()
