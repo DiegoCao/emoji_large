@@ -208,6 +208,7 @@ def extract_emoji_hashtag(emoji_json, regex):
         msg = ""
         for commit in pay_load['commits']:
             msg += commit['message']
+            
         
     elif dtype == "CreateEvent":
         msg = pay_load['description']
