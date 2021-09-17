@@ -48,7 +48,6 @@ if __name__ == "__main__":
 
     udf_ = udf(getSetlen, IntegerType())
 
-
     commentdf = df_comment.withColumn("commentemojicnt", udf_("comment_emojis"))
     selected_comment = commentdf.select('commentid', 'commentemojicnt')
     prdf = df_pr.withColumn("premojicnt", udf_("pr_emojis"))
@@ -56,7 +55,7 @@ if __name__ == "__main__":
     selected_pr = prdf.select("prid", 'premojicnt')
 
     issuedf = df_issue.withColumn("issueemojicnt", udf_("issue_emojis"))
-    selected_issue = issuedf("issueid", "issueemojicnt")
+    selected_issue = issuedf.select("issueid", "issueemojicnt")
 
     dfmap = df.select("rid", "aid", "prid", "issueid", "commentid")
 
