@@ -35,9 +35,8 @@ def getSetVar(lis):
             if emoj not in edict:
                 edict[emoj] = 0
             edict[emoj] += 1
-
     
-    return np.var()
+    return np.var(list(edict.values()))
 
 import pyspark.sql.functions as func
 
@@ -70,6 +69,8 @@ if __name__ == "__main__":
     df_pr = df.filter(df.prid.isNotNull()).groupby("prid").agg(func.collect_list('emojis').alias('pr_emojis'))
 
     udf_ = udf(udffilter, IntegerType())
+
+    
 
     commentdf = df_comment.withColumn("commentemojicnt", udf_("comment_emojis"))
     selected_comment = commentdf.select('commentid', 'commentemojicnt')
