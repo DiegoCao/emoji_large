@@ -51,18 +51,17 @@ if __name__ == "__main__":
     df_issue = df.filter(df.issueid.isNotNull()&df.commentid.isNull()).groupby("issueid").agg(func.collect_list('emojis').alias('issue_emojis'))
     df_pr = df.filter(df.prid.isNotNull()).groupby("prid").agg(func.collect_list('emojis').alias('pr_emojis'))
 
-    udf_ = udf(getSetlen, IntegerType())
+    udf_ = udf(udffilter, IntegerType())
 
     commentdf = df_comment.withColumn("commentemojicnt", udf_("comment_emojis"))
     selected_comment = commentdf.select('commentid', 'commentemojicnt')
     prdf = df_pr.withColumn("premojicnt", udf_("pr_emojis"))
-    
     selected_pr = prdf.select("prid", 'premojicnt')
-
     issuedf = df_issue.withColumn("issueemojicnt", udf_("issue_emojis"))
     selected_issue = issuedf.select("issueid", "issueemojicnt")
 
-    dfmap = df.select("rid", "aid", "prid", "issueid", "commentid")
+
+    dfmap = df.select("rid", "aid", "prid", "issueid", "commentid").distinct()
 
     dfmap.createOrReplaceTempView("DFMAP")
     selected_issue.createOrReplaceTempView("SISSUE")
