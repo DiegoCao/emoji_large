@@ -68,9 +68,9 @@ if __name__ == "__main__":
                 d.prid == p.prid and 
                 d.commentid == c.commentid
             """)    
-    selected_comment.createOrReplaceTempView("RES")
+    res.createOrReplaceTempView("RES")
 
-    dfcount = res.groupby("rid").agg(countDistinct("issueemojicnt"), countDistinct("commentemojicnt"), countDistinct("premojicnt"))
+    dfcount = res.groupby("rid").agg(sum("issueemojicnt").alias("issueemojitotal"), sum("commentemojicnt").alias("commentemojitotal"), sum("premojicnt").alias("premojitotal"))
 
     dfusers = df_old.groupby("rid").agg(countDistinct("aid"))
 
