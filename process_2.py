@@ -41,8 +41,9 @@ if __name__ == "__main__":
     df = spark.read.parquet("/user/hangrui/2018_year_pid_v2.parquet")
 
     df_event_cnt = df_old.groupby('rid').count().withColumnRenamed('count(rid)', 'repoeventcnt')
+    df_event_cnt.show()
     df_ads = df_old.groupby('rid').agg(countDistinct("aid").alias("repouserscnt"))
-
+    df_ads.show()
 
 
 
@@ -68,19 +69,19 @@ if __name__ == "__main__":
     selected_pr.createOrReplaceTempView("SPR")
     selected_comment.createOrReplaceTempView("SCOMMENT")
     selected_comment.show()
-    # res = spark.sql("""select * from DFMAP d, SISSUE i, SPR p, SCOMMENT c
-    #             where (d.issueid == i.issueid and d.commentid == null ) and 
-    #             d.prid == p.prid and 
-    #             d.commentid == c.commentid
-    #         """)    
-    # res.show()
-    # res.createOrReplaceTempView("RES")
+    res = spark.sql("""select * from DFMAP d, SISSUE i, SPR p, SCOMMENT c
+                where (d.issueid == i.issueid and d.commentid == null ) and 
+                d.prid == p.prid and 
+                d.commentid == c.commentid
+            """)    
+    res.show()
+    res.createOrReplaceTempView("RES")
 
 
 
-    # dfcount = res.groupby("rid").agg(sum("issueemojicnt").alias("issueemojitotal"), sum("commentemojicnt").alias("commentemojitotal"), sum("premojicnt").alias("premojitotal"))
+    dfcount = res.groupby("rid").agg(sum("issueemojicnt").alias("issueemojitotal"), sum("commentemojicnt").alias("commentemojitotal"), sum("premojicnt").alias("premojitotal"))
 
-    # dfusers = df_old.groupby("rid").agg(countDistinct("aid"))
+
 
 
     res.show()
