@@ -53,9 +53,11 @@ if __name__ == "__main__":
 
     df_event_cnt = df_old.groupby('rid').count().withColumnRenamed('count(rid)', 'repoeventcnt')
     df_event_cnt.show()
+    df_event_cnt.write.format("csv").option("header", "true").save("/user/hangrui/new/dfeventcnt")
 
     # dfusers = df_old.groupby('rid').a
     dfusers = df_old.groupby('rid').agg(countDistinct("aid").alias("repouserscnt"))
+    dfusers.write.format("csv").option("header", "true").save("/user/hangrui/new/dfusers")
 
 
 
@@ -100,21 +102,22 @@ if __name__ == "__main__":
 
 
 
-    dfcount = res.na.fill(0).groupby("rid").agg(func.sum(res.commentemojicnt+res.premojicnt+res.issueemojicnt).alias('totalcnt'))
+    # dfcount = res.na.fill(0).groupby("rid").agg(func.sum(res.commentemojicnt+res.premojicnt+res.issueemojicnt).alias('totalcnt'))
 
-    dfcount = dfcount.join(df_event_cnt, df_event_cnt['rid']==dfcount['rid'])
-    dfcount = dfcount.join(dfusers, dfusers['rid']==dfcount['rid'])
+    res.write.format("csv").option("header", "true").save("/user/hangrui/new/res")
+    # dfcount = dfcount.join(df_event_cnt, df_event_cnt['rid']==dfcount['rid'])
+    # dfcount = dfcount.join(dfusers, dfusers['rid']==dfcount['rid'])
 
-    # dfcount
-    #  
-    dfcount.show()
+    # # dfcount
+    # #  
+    # dfcount.show()
 
-    res = spark.sql("""select * from DFMAP d
-                    left outer join SISSUE i on i.issueid == d.issueid and
-                    left outer join SPR p on p.prid == d.prid and
-                    left outer join SCOMMENT c on c.commentid == d.commentid
-                    """)
-    res.show()
+    # res = spark.sql("""select * from DFMAP d
+    #                 left outer join SISSUE i on i.issueid == d.issueid and
+    #                 left outer join SPR p on p.prid == d.prid and
+    #                 left outer join SCOMMENT c on c.commentid == d.commentid
+    #                 """)
+    # res.show()
     # dfcount.
 
     
