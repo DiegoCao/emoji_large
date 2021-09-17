@@ -92,9 +92,10 @@ if __name__ == "__main__":
     selected_comment.show()
 
    
-    res = dfmap.join(selected_pr, selected_pr["prid"]== dfmap["prid"], 'outer')\
-                .join(selected_comment, selected_comment["commentid"]==dfmap["commentid"], 'outer')\
-                    .join(selected_issue, selected_issue["issueid"]==dfmap["issueid"], 'outer')
+    res = dfmap.alias('a').join(selected_pr.alias('b'), selected_pr["prid"]== dfmap["prid"], 'outer')\
+                .join(selected_comment.alias('c'), selected_comment["commentid"]==dfmap["commentid"], 'outer')\
+                    .join(selected_issue.alias('d'), selected_issue["issueid"]==dfmap["issueid"], 'outer')\
+                        .select('a.rid', 'a.aid', 'a.prid', 'a.issueid', 'a.commentid', 'b.premojicnt', 'c.commentemojicnt', 'd.issueemojicnt')
                         # .select($'selected_pr')
 
     res.show()
