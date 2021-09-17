@@ -449,7 +449,7 @@ def analysis_DF():
     selected_comment.write.format("csv").option("header", "true").save("/user/hangrui/new/issuecnt_csv/")
     # selected_pr.write.format("csv").option("header", "true").save("/user/hangrui/new/pr_cnt")
     
-    # selectdf = df_old.select('rid', 'aid', 'commentid', 'prid')
+    # selectdf = df_old.select('rid', 'aid', 'commentid', 'prid', 'issueid')
     # selectdf.write.format("csv").option("header", "true").save("/user/hangrui/new/idmap")
 
 
@@ -506,4 +506,4 @@ def analysis_DF():
 
     
 if __name__ == '__main__':
-    analysis_DF()
+    main()
