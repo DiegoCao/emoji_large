@@ -53,8 +53,9 @@ if __name__ == "__main__":
 
     df_event_cnt = df_old.groupby('rid').count().withColumnRenamed('count(rid)', 'repoeventcnt')
     df_event_cnt.show()
-    # df_ads = df_old.groupby('rid').agg(countDistinct("aid").alias("repouserscnt"), countDistinct('prid').alias('repopids'), countDistinct('issueid').alias('repoissueids'), countDistinct('commentid').alias('repocommentids'), \
-        # countDistinct(func.when(col('prid')!=null)))
+
+    # dfusers = df_old.groupby('rid').a
+    dfusers = df_old.groupby('rid').agg(countDistinct("aid").alias("repouserscnt"))
 
 
 
@@ -105,6 +106,9 @@ if __name__ == "__main__":
 
     dfcount = res.na.fill(0).groupby("rid").agg(func.sum(res.commentemojicnt+res.premojicnt+res.issueemojicnt).alias('totalcnt'))
 
+    dfcount = dfcount.join(df_event_cnt, df_event_cnt['rid']==dfcount['rid'])
+    dfcount = dfcount.join(dfusers, dfusers['rid']==dfcount['rid'])
+    
     # dfcount
     #  
     dfcount.show()
