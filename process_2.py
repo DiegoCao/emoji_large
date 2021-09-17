@@ -40,7 +40,10 @@ if __name__ == "__main__":
     df_old = spark.read.parquet("/user/hangrui/2018_year_pid_v2.parquet")
     df = spark.read.parquet("/user/hangrui/2018_year_pid_v2.parquet")
 
-    
+    df_event_cnt = df_old.groupby('rid').count().withColumnRenamed('count(rid)', 'repoeventcnt')
+    df_ads = df_old.groupby('rid').agg(countDistinct("aid").alias("repouserscnt"))
+
+
 
 
     df = df.filter(df.has_emoji == True)
@@ -65,13 +68,14 @@ if __name__ == "__main__":
     selected_issue.createOrReplaceTempView("SISSUE")
     selected_pr.createOrReplaceTempView("SPR")
     selected_comment.createOrReplaceTempView("SCOMMENT")
-    res = spark.sql("""select * from DFMAP d, SISSUE i, SPR p, SCOMMENT c
-                where (d.issueid == i.issueid and d.commentid == null ) and 
-                d.prid == p.prid and 
-                d.commentid == c.commentid
-            """)    
-    res.show()
-    res.createOrReplaceTempView("RES")
+    selected_comment.show()
+    # res = spark.sql("""select * from DFMAP d, SISSUE i, SPR p, SCOMMENT c
+    #             where (d.issueid == i.issueid and d.commentid == null ) and 
+    #             d.prid == p.prid and 
+    #             d.commentid == c.commentid
+    #         """)    
+    # res.show()
+    # res.createOrReplaceTempView("RES")
 
 
 
