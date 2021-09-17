@@ -87,27 +87,31 @@ if __name__ == "__main__":
     selected_pr.createOrReplaceTempView("SPR")
     selected_comment.createOrReplaceTempView("SCOMMENT")
     selected_comment.show()
-    # res = spark.sql("""select * from DFMAP d, SISSUE i, SPR p, SCOMMENT c 
-    #                 left join 
-    #             # where (d.issueid == i.issueid and d.commentid == null ) and 
-    #             # d.prid == p.prid and 
-    #             # d.commentid == c.commentid
-    #         """)    
+    res = spark.sql("""select * from DFMAP d, SISSUE i, SPR p, SCOMMENT c 
+                    left join 
+                # where (d.issueid == i.issueid and d.commentid == null ) and 
+                # d.prid == p.prid and 
+                # d.commentid == c.commentid
+            """)    
     res = dfmap.join(selected_pr, selected_pr["prid"]== dfmap["prid"], 'outer')\
                 .join(selected_comment, selected_comment["commentid"]==dfmap["commentid"], 'outer')\
                     .join(selected_issue, selected_issue["issueid"]==dfmap["issueid"], 'outer')
+                        # .select($'selected_pr')
 
     res.show()
     res.createOrReplaceTempView("RES")
 
 
 
-    dfcount = res.groupby("rid").agg(sum("issueemojicnt").alias("issueemojitotal"), sum("commentemojicnt").alias("commentemojitotal"), sum("premojicnt").alias("premojitotal"))
+    dfcount = res.na.fill(0).groupby("rid").agg(func.sum(res.commentemojicnt+res.premojicnt+res.issueemojicnt).alias('totalcnt'))
 
+    # dfcount
+    #  
     dfcount.show()
 
 
     res.show()
+    # dfcount.
 
     
 
