@@ -44,11 +44,15 @@ if __name__ == "__main__":
     df_comment = df.filter(df.commentid.isNotNull())
     df_issue = df.filter(df.issueid.isNotNull()&df.commentid.isNull())
     df_pr = df.filter(df.prid.isNotNull())
+    
     udf_ = udf(getSetlen, IntegerType())
-    commentdf = df_comment.withColumn("commentemojicnt", udf_("issue_emojis"))
-    selected_comment = commentdf.select('issueid', 'commentemojicnt')
+
+    commentdf = df_comment.withColumn("commentemojicnt", udf_("comment_emojis"))
+    selected_comment = commentdf.select('commentid', 'commentemojicnt')
     prdf = df_pr.withColumn("premojicnt", udf_("pr_emojis"))
+    
     selected_pr = prdf.select("prid", 'premojicnt')
+
     issuedf = df_issue.withColumn("issueemojicnt", udf_("issue_emojis"))
     selected_issue = issuedf("issueid", "issueemojicnt")
 
