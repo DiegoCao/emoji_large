@@ -59,7 +59,7 @@ if __name__ == "__main__":
     selected_pr.createOrReplaceTempView("SPR")
     selected_comment.createOrReplaceTempView("SCOMMENT")
     res = spark.sql("""select * from DFMAP d, SISSUE i, SPR p, SCOMMENT c
-                where (d.issueid == i.issueid and i.commentid == null ) and 
+                where (d.issueid == i.issueid and d.commentid == null ) and 
                 d.prid == p.prid and 
                 d.commentid == c.commentid
             """)    
