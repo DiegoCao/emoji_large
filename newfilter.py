@@ -410,31 +410,35 @@ def analysis_DF():
     raw_root = "/user/hangrui/"
     df = spark.read.parquet("/user/hangrui/2018_year_pid.parquet")
 
-    groupdf = df.groupby('rid').agg(countDistinct('prid'))
+    # groupdf = df.groupby('rid').agg(countDistinct('prid'))
     
 
     # piddf = df.select('prid', 'has_emoji').distinct()
-    final_df = df.groupby('rid').agg(countDistinct('prid'), countDistinct('issueid'), countDistinct('commentid'))
+    # final_df = df.groupby('rid').agg(countDistinct('prid'), countDistinct('issueid'), countDistinct('commentid'))
+    
     # groupdf = piddf.join(groupdf,groupdf.prid==piddf.prid, 'outer')
-    groupdf.write.format("csv").option("header", "true").save("/user/hangrui/new/rid_cnt_distinct")
+    # groupdf.show()
+
+    # final_df.write.format("csv").option("header", "true").save("/user/hangrui/new/rid_all_distinct")
     
     # df.show()
     # df.write.format("csv").option("header", "true").save("/user/hangrui/new/rid_post_distinct")
 
-    # df_old= df.filter(df.has_emoji == True)
+    df_old= df.filter(df.has_emoji == True)
     
-    # df = df_old.filter(df.commentid.isNotNull())
+    df = df_old.filter(df.commentid.isNull()&df.issueid.isNotNull())
 
     # df.show()
     # # # df.write.save("/user/hangrui/comment_emoji.parquet")
-    # commentdf = df.groupby('commentid').agg(func.collect_list('emojis').alias('comment_emojis'))
+    commentdf = df.groupby('issueid').agg(func.collect_list('emojis').alias('issue_emojis'))
 
 
-    # udf_ = udf(udffilter, IntegerType())
+    udf_ = udf(udffilter, IntegerType())
 
-    # commentdf = commentdf.withColumn("emojicnt", udf_("comment_emojis"))
+    commentdf = commentdf.withColumn("emojicnt", udf_("issue_emojis"))
     # commentdf.show()
-    # selected_comment = commentdf.select('commentid', 'emojicnt')
+    selected_comment = commentdf.select('issueid', 'emojicnt')
+
     # df = df_old.filter(df.prid.isNotNull())
     # df.show()
     # prdf = df.groupby('prid').agg(func.collect_list('emojis').alias('pr_emojis'))
@@ -442,7 +446,7 @@ def analysis_DF():
     # prdf.show()
     # selected_pr = prdf.select('emojicnt', 'prid')
 
-    # selected_comment.write.format("csv").option("header", "true").save("/user/hangrui/new/commenttype_cnt/")
+    selected_comment.write.format("csv").option("header", "true").save("/user/hangrui/new/issuecnt_csv/")
     # selected_pr.write.format("csv").option("header", "true").save("/user/hangrui/new/pr_cnt")
     
     # selectdf = df_old.select('rid', 'aid', 'commentid', 'prid')
