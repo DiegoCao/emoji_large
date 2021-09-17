@@ -93,9 +93,9 @@ if __name__ == "__main__":
     #             # d.prid == p.prid and 
     #             # d.commentid == c.commentid
     #         """)    
-    res = dfmap.join(selected_pr, selected_pr.prid==dfmap.prid, 'outer')\
-                .join(selected_comment, selected_comment.commentid==dfmap.commentid, 'outer')\
-                    .join(selected_issue, selected_issue.issueid==dfmap.issueid, 'outer')
+    res = dfmap.join(selected_pr, selected_pr["prid"]== dfmap["prid"], 'outer')\
+                .join(selected_comment, selected_comment["commentid"]==dfmap["commentid"], 'outer')\
+                    .join(selected_issue, selected_issue["issueid"]==dfmap["issueid"], 'outer')
 
     res.show()
     res.createOrReplaceTempView("RES")
