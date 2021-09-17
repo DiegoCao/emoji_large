@@ -40,6 +40,8 @@ if __name__ == "__main__":
     df_old = spark.read.parquet("/user/hangrui/2018_year_pid_v2.parquet")
     df = spark.read.parquet("/user/hangrui/2018_year_pid_v2.parquet")
 
+    
+
 
     df = df.filter(df.has_emoji == True)
     df_comment = df.filter(df.commentid.isNotNull()).groupby("commentid").agg(func.collect_list('emojis').alias('comment_emojis'))
@@ -68,11 +70,14 @@ if __name__ == "__main__":
                 d.prid == p.prid and 
                 d.commentid == c.commentid
             """)    
+    res.show()
     res.createOrReplaceTempView("RES")
 
-    dfcount = res.groupby("rid").agg(sum("issueemojicnt").alias("issueemojitotal"), sum("commentemojicnt").alias("commentemojitotal"), sum("premojicnt").alias("premojitotal"))
 
-    dfusers = df_old.groupby("rid").agg(countDistinct("aid"))
+
+    # dfcount = res.groupby("rid").agg(sum("issueemojicnt").alias("issueemojitotal"), sum("commentemojicnt").alias("commentemojitotal"), sum("premojicnt").alias("premojitotal"))
+
+    # dfusers = df_old.groupby("rid").agg(countDistinct("aid"))
 
 
     res.show()
