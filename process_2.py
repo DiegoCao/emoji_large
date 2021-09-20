@@ -129,7 +129,7 @@ if __name__ == "__main__":
 
     # dfcount = res.na.fill(0).groupby("rid").agg(func.sum(res.commentemojicnt+res.premojicnt+res.issueemojicnt).alias('totalcnt'))
 
-    res.write.format("csv").option("header", "true").save("/user/hangrui/new/restype")
+    res.write.format("csv").option("header", "true").save("/user/hangrui/new/restypenew")
     # dfcount = dfcount.join(df_event_cnt, df_event_cnt['rid']==dfcount['rid'])
     # dfcount = dfcount.join(dfusers, dfusers['rid']==dfcount['rid'])
 
