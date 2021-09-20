@@ -82,8 +82,7 @@ if __name__ == "__main__":
 
     df = df.filter(df.has_emoji == True)
     dffilter = df_old.groupby('rid').agg(countDistinct("prid").alias("repoprcnt"), countDistinct("issueid").alias("repoissuecnt"), countDistinct("commentid").alias("repocommentcnt"))
-
-    dffilter = dffilter.groupby('rid').agg(func.sum(dfall.repoprcnt+dfall.repoissuecnt + dfall.repocommentcnt).alias("filterposts"))
+    dffilter = dffilter.groupby('rid').agg(func.sum(dffilter.repoprcnt+dffilter.repoissuecnt + dffilter.repocommentcnt).alias("filterposts"))
     dffilter.write.format("csv").option("header", "true").save("/user/hangrui/new/repofilterposts")
     dfall.write.format("csv").option("header", "true").save("/user/hangrui/new/repoallposts")
 
