@@ -59,13 +59,21 @@ if __name__ == "__main__":
     dfusers = df_old.groupby('rid').agg(countDistinct("aid").alias("repouserscnt"))
     # dfusers.write.format("csv").option("header", "true").save("/user/hangrui/new/dfusers")
 
-    dfpids = df_old.groupby('rid').agg(countDistinct("prid").alias("repoprcnt"))
-    dfissues = df_old.groupby('rid').agg(countDistinct("issueid").alias("repoissuecnt"))
-    dfcomment = df_old.groupby('rid').agg(countDistinct("commentid").alias("repocommentcnt"))
+    dfall = df_old.groupby('rid').agg(countDistinct("prid").alias("repoprcnt"), countDistinct("issueid").alias("repoissuecnt"), countDistinct("commentid").alias("repocommentcnt"))
+    dfall = dfall.groupby('rid').agg(func.sum(dfall.repoprcnt+dfall.repoissuecnt + dfall.repocommentcnt).alias("allposts"))
 
-    dfpids.write.format("csv").option("header", "true").save("/user/hangrui/new/repoprcnt")
-    dfissues.write.format("csv").option("header", "true").save("/user/hangrui/new/repoissuescnt")
-    dfcomment.write.format("csv").option("header", "true").save("/user/hangrui/new/repocommentcnt")
+    # dfissues = df_old.groupby('rid').agg(countDistinct("issueid").alias("repoissuecnt"))
+    # dfcomment = df_old.groupby('rid').agg(countDistinct("commentid").alias("repocommentcnt"))
+
+    # dfgen = spark.sql("""select * from DFMAP d
+    #                 left outer join SISSUE i on i.issueid == d.issueid and
+    #                 left outer join SPR p on p.prid == d.prid and
+    #                 left outer join SCOMMENT c on c.commentid == d.commentid
+    #                 """)
+
+    # dfpids.write.format("csv").option("header", "true").save("/user/hangrui/new/repoprcnt")
+    # dfissues.write.format("csv").option("header", "true").save("/user/hangrui/new/repoissuescnt")
+    # dfcomment.write.format("csv").option("header", "true").save("/user/hangrui/new/repocommentcnt")
 
 
     # df_ads.show()
@@ -73,9 +81,18 @@ if __name__ == "__main__":
 
 
     df = df.filter(df.has_emoji == True)
+    dffilter = df_old.groupby('rid').agg(countDistinct("prid").alias("repoprcnt"), countDistinct("issueid").alias("repoissuecnt"), countDistinct("commentid").alias("repocommentcnt"))
+
+    dffilter = dffilter.groupby('rid').agg(func.sum(dfall.repoprcnt+dfall.repoissuecnt + dfall.repocommentcnt).alias("filterposts"))
+    dffilter.write.format("csv").option("header", "true").save("/user/hangrui/new/repofilterposts")
+    dfall.write.format("csv").option("header", "true").save("/user/hangrui/new/repoallposts")
+
+
     df_comment = df.filter(df.commentid.isNotNull()).groupby("commentid").agg(func.collect_list('emojis').alias('comment_emojis'))
     df_issue = df.filter(df.issueid.isNotNull()&df.commentid.isNull()).groupby("issueid").agg(func.collect_list('emojis').alias('issue_emojis'))
     df_pr = df.filter(df.prid.isNotNull()).groupby("prid").agg(func.collect_list('emojis').alias('pr_emojis'))
+
+
 
     udf_ = udf(udffilter, IntegerType())
 
