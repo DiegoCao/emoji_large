@@ -59,7 +59,7 @@ if __name__ == "__main__":
     dfusers = df_old.groupby('rid').agg(countDistinct("aid").alias("repouserscnt"))
     # dfusers.write.format("csv").option("header", "true").save("/user/hangrui/new/dfusers")
 
-    dfpids = df_old.groupby('rid').agg(countDistinct("pid").alias("repoprcnt"))
+    dfpids = df_old.groupby('rid').agg(countDistinct("prid").alias("repoprcnt"))
     dfissues = df_old.groupby('rid').agg(countDistinct("issueid").alias("repoissuecnt"))
     dfcomment = df_old.groupby('rid').agg(countDistinct("commentid").alias("repocommentcnt"))
 
