@@ -83,8 +83,8 @@ if __name__ == "__main__":
     df = df.filter(df.has_emoji == True)
     dffilter = df_old.groupby('rid').agg(countDistinct("prid").alias("repoprcnt"), countDistinct("issueid").alias("repoissuecnt"), countDistinct("commentid").alias("repocommentcnt"))
     dffilter = dffilter.groupby('rid').agg(func.sum(dffilter.repoprcnt+dffilter.repoissuecnt + dffilter.repocommentcnt).alias("filterposts"))
-    dffilter.write.format("csv").option("header", "true").save("/user/hangrui/new/repofilterposts")
-    dfall.write.format("csv").option("header", "true").save("/user/hangrui/new/repoallposts")
+    # dffilter.write.format("csv").option("header", "true").save("/user/hangrui/new/repofilterposts")
+    # dfall.write.format("csv").option("header", "true").save("/user/hangrui/new/repoallposts")
 
 
     df_comment = df.filter(df.commentid.isNotNull()).groupby("commentid").agg(func.collect_list('emojis').alias('comment_emojis'))
@@ -93,16 +93,18 @@ if __name__ == "__main__":
 
 
 
-    udf_ = udf(udffilter, IntegerType())
+    udf_ = udf(getSetVar, IntegerType())
 
     
 
-    commentdf = df_comment.withColumn("commentemojicnt", udf_("comment_emojis"))
-    selected_comment = commentdf.select('commentid', 'commentemojicnt')
-    prdf = df_pr.withColumn("premojicnt", udf_("pr_emojis"))
-    selected_pr = prdf.select("prid", 'premojicnt')
-    issuedf = df_issue.withColumn("issueemojicnt", udf_("issue_emojis"))
-    selected_issue = issuedf.select("issueid", "issueemojicnt")
+    commentdf = df_comment.withColumn("commentemojitype", udf_("comment_emojis"))
+    selected_comment = commentdf.select('commentid', 'commentemojitype')
+    prdf = df_pr.withColumn("premojitype", udf_("pr_emojis"))
+    selected_pr = prdf.select("prid", 'premojitype')
+    issuedf = df_issue.withColumn("issueemojitype", udf_("issue_emojis"))
+    selected_issue = issuedf.select("issueid", "issueemojitype")
+
+
 
 
     dfmap = df.select("rid", "aid", "prid", "issueid", "commentid").distinct()
@@ -117,7 +119,7 @@ if __name__ == "__main__":
     res = dfmap.alias('a').join(selected_pr.alias('b'), selected_pr["prid"]== dfmap["prid"], 'outer')\
                 .join(selected_comment.alias('c'), selected_comment["commentid"]==dfmap["commentid"], 'outer')\
                     .join(selected_issue.alias('d'), selected_issue["issueid"]==dfmap["issueid"], 'outer')\
-                        .select('a.rid', 'a.aid', 'a.prid', 'a.issueid', 'a.commentid', 'b.premojicnt', 'c.commentemojicnt', 'd.issueemojicnt')
+                        .select('a.rid', 'a.aid', 'a.prid', 'a.issueid', 'a.commentid', 'b.premojitype', 'c.commentemojitype', 'd.issueemojitype')
                         # .select($'selected_pr')
 
     res.show()
@@ -127,7 +129,7 @@ if __name__ == "__main__":
 
     # dfcount = res.na.fill(0).groupby("rid").agg(func.sum(res.commentemojicnt+res.premojicnt+res.issueemojicnt).alias('totalcnt'))
 
-    res.write.format("csv").option("header", "true").save("/user/hangrui/new/res")
+    res.write.format("csv").option("header", "true").save("/user/hangrui/new/restype")
     # dfcount = dfcount.join(df_event_cnt, df_event_cnt['rid']==dfcount['rid'])
     # dfcount = dfcount.join(dfusers, dfusers['rid']==dfcount['rid'])
 
