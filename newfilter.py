@@ -278,7 +278,7 @@ def main():
     files = sc.textFile(raw_root + "2018-*.json.gz")
     text = files.map(lambda line: extract_emoji_hashtag(line, regex))
     df = text.toDF()
-    df.write.save('2018_year_pid_v2.parquet')
+    df.write.save('tmp.csv')
     print('sucessfully saved')
 
     sc.stop()
