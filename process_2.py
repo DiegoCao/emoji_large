@@ -25,8 +25,8 @@ def getSetlen(lis):
         for emoj in arr:
             eset.add(emoj)
         
-    return len(eset)/len(lis)
-
+    return len(eset)
+    
 import numpy as np
 def getSetVar(lis):
     edict = dict()
@@ -83,7 +83,7 @@ if __name__ == "__main__":
     df = df.filter(df.has_emoji == True)
     dffilter = df.groupby('rid').agg(countDistinct("prid").alias("repoprcnt"), countDistinct("issueid").alias("repoissuecnt"), countDistinct("commentid").alias("repocommentcnt"))
     dffilter = dffilter.groupby('rid').agg(func.sum(dffilter.repoprcnt+dffilter.repoissuecnt + dffilter.repocommentcnt).alias("filterposts"))
-    dffilter.write.format("csv").option("header", "true").save("/user/hangrui/new/repofilterposts")
+    # dffilter.write.format("csv").option("header", "true").save("/user/hangrui/new/repofilterposts")
     # dfall.write.format("csv").option("header", "true").save("/user/hangrui/new/repoallposts")
 
 
@@ -93,7 +93,7 @@ if __name__ == "__main__":
 
 
 
-    udf_ = udf(getSetVar, IntegerType())
+    udf_ = udf(getSetlen, IntegerType())
 
     
 
