@@ -113,7 +113,7 @@ if __name__ == "__main__":
     selected_issue.createOrReplaceTempView("SISSUE")
     selected_pr.createOrReplaceTempView("SPR")
     selected_comment.createOrReplaceTempView("SCOMMENT")
-    selected_comment.show()
+    # selected_comment.show()
 
    
     res = dfmap.alias('a').join(selected_pr.alias('b'), selected_pr["prid"]== dfmap["prid"], 'outer')\
