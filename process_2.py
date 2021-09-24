@@ -54,10 +54,10 @@ if __name__ == "__main__":
     df_event_cnt = df_old.groupby('rid').count().withColumnRenamed('count(rid)', 'repoeventcnt')
     df_event_cnt.show()
     # df_event_cnt.write.format("csv").option("header", "true").save("/user/hangrui/new/dfeventcnt")
-
+    dff1 = df_old.filter( (df_old.event=="PushEvent")| (df_old.event== "IssuesEvent") | (df_old.event=="IssueCommentEvent") | (df_old.event=="PullRequestReviewCommentEvent") | (df_old.event=="PullRequestReviewEvent"))
     # dfusers = df_old.groupby('rid').a
-    dfusers = df_old.groupby('rid').agg(countDistinct("aid").alias("repouserscnt"))
-    # dfusers.write.format("csv").option("header", "true").save("/user/hangrui/new/dfusers")
+    dfusers = dff1.groupby('rid').agg(countDistinct("aid").alias("repouserscnt"))
+    dfusers.write.format("csv").option("header", "true").save("/user/hangrui/new/dfuserswork")
 
     dfall = df_old.groupby('rid').agg(countDistinct("prid").alias("repoprcnt"), countDistinct("issueid").alias("repoissuecnt"), countDistinct("commentid").alias("repocommentcnt"))
     dfall = dfall.groupby('rid').agg(func.sum(dfall.repoprcnt+dfall.repoissuecnt + dfall.repocommentcnt).alias("allposts"))
