@@ -59,7 +59,10 @@ if __name__ == "__main__":
     sort_udf = func.udf(sorter)
 
     # w = Window.partitionby()
-    df = df.groupby('commentissueid').agg(func.collect_list(func.struct("created_time", "has_emoji"))).alias("templist")
+    df = df.groupby('commentissueid')\
+        .agg(func.collect_list(func.struct("created_time", "has_emoji"))\
+        .alias("templist"))
+    
     df = df.select("commentissueid", sort_udf("templist") \
         .alias("sorted_list")) \
         # .show(truncate = False)
