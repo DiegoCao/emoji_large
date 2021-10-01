@@ -49,8 +49,8 @@ if __name__ == "__main__":
     spark = SparkSession(sc)
     spark.sparkContext.setLogLevel('WARN')
     raw_root = "/user/hangrui/"
-    df_old = spark.read.parquet("/user/hangrui/2018_year_pid_v3.parquet")
-    df = spark.read.parquet("/user/hangrui/2018_year_pid_v3.parquet")
+    df_old = spark.read.parquet("/user/hangrui/2018_parquet_v3.parquet")
+    df = spark.read.parquet("/user/hangrui/2018_parquet_v3.parquet")
 
     df = df.filter(df.commentid.isNotNull()&df.commentissueid.isNotNull())
     def sorter(l):
