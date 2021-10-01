@@ -54,8 +54,10 @@ if __name__ == "__main__":
     df_event_cnt = df_old.groupby('rid').count().withColumnRenamed('count(rid)', 'repoeventcnt')
     df_event_cnt.show()
     # df_event_cnt.write.format("csv").option("header", "true").save("/user/hangrui/new/dfeventcnt")
-    dff1 = df_old.filter((df_old.type=="PushEvent") | (df_old.type== "IssuesEvent") | (df_old.type=="IssueCommentEvent") | (df_old.type=="PullRequestReviewCommentEvent") | (df_old.type=="PullRequestEvent")｜(df_old.type=="CommitCommentEvent"))
+    dff1 = df_old.filter((df_old.type=="PushEvent") | (df_old.type== "IssuesEvent") | (df_old.type=="IssueCommentEvent") | (df_old.type=="PullRequestReviewCommentEvent") | (df_old.type=="PullRequestEvent") | (df_old.type=="CommitCommentEvent"))
     
+    dfworkevents = dff1.groupby('rid').count().withColumnRenamed('count(rid)', 'repoworkeventcnt')
+    dfworkevents.write.format("csv").option("header", "true").save("/user/hangrui/new/dfworkeventscnt")
     # dfusers = df_old.groupby('rid').a
     dfusers = dff1.groupby('rid').agg(countDistinct("aid").alias("repouserscnt"))
     dfusers.write.format("csv").option("header", "true").save("/user/hangrui/new/dfuserswork")
