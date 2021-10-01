@@ -219,7 +219,7 @@ def extract_emoji_hashtag(emoji_json, regex):
         dic["issueid"] = pay_load['issue']['id']
     elif dtype == "IssueCommentEvent":
         msg = pay_load['comment']['body']
-        # dic["issueid"] = pay_load['issue']['id']
+        dic["commentissueid"] = pay_load['issue']['id']
         dic["commentid"]=pay_load['comment']['id']
 
     elif dtype == "PullRequestEvent":
@@ -255,6 +255,8 @@ def extract_emoji_hashtag(emoji_json, regex):
     if len(emojis) > 0:
         dic['has_emoji'] = True
         
+    dic['action'] = pay_load['action']
+    
     dic['msg'] = msg
     dic['emojis'] = emojis
     
