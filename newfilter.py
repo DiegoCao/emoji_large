@@ -195,6 +195,8 @@ def extract_emoji_hashtag(emoji_json, regex):
     dic['id'] = emoji_json['id']
     # dic['payload'] = emoji_json['payload']
     pay_load = emoji_json['payload']
+    if 'action' in pay_load:
+        dic['action'] = pay_load['action']
     dic['type'] = emoji_json['type']
     dic['public'] = emoji_json['public']
     dic['rid'] = emoji_json['repo']['id']
@@ -255,7 +257,7 @@ def extract_emoji_hashtag(emoji_json, regex):
     if len(emojis) > 0:
         dic['has_emoji'] = True
         
-    dic['action'] = pay_load['action']
+
     
     dic['msg'] = msg
     dic['emojis'] = emojis
@@ -300,6 +302,8 @@ def filter2(line):
     if line is None:
         return False
     return True
+
+
 def testsmall():
     
     print('the test of small')
@@ -412,29 +416,19 @@ def analysis_DF():
     spark.sparkContext.setLogLevel('WARN')
     raw_root = "/user/hangrui/"
     df = spark.read.parquet("/user/hangrui/2018_year_pid.parquet")
-
     # groupdf = df.groupby('rid').agg(countDistinct('prid'))
-    
-
     # piddf = df.select('prid', 'has_emoji').distinct()
     # final_df = df.groupby('rid').agg(countDistinct('prid'), countDistinct('issueid'), countDistinct('commentid'))
-    
+
     # groupdf = piddf.join(groupdf,groupdf.prid==piddf.prid, 'outer')
     # groupdf.show()
-
     # final_df.write.format("csv").option("header", "true").save("/user/hangrui/new/rid_all_distinct")
-    
-    # df.show()
     # df.write.format("csv").option("header", "true").save("/user/hangrui/new/rid_post_distinct")
 
     df_old= df.filter(df.has_emoji == True)
-    
     df = df_old.filter(df.commentid.isNull()&df.issueid.isNotNull())
-
-    # df.show()
     # # # df.write.save("/user/hangrui/comment_emoji.parquet")
     commentdf = df.groupby('issueid').agg(func.collect_list('emojis').alias('issue_emojis'))
-
 
     udf_ = udf(udffilter, IntegerType())
 
