@@ -72,6 +72,8 @@ if __name__ == "__main__":
     
     dfi = dfi.select("issueid", sort_udf("templist") \
         .alias("comment_list")) \
+        
+    dfi.show()
 
     dfci = df.groupby('commentissueid')\
             .agg(func.collect_list(func.struct("created_time", "has_emoji"))\
