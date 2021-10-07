@@ -53,7 +53,7 @@ if __name__ == "__main__":
     df = spark.read.parquet("/user/hangrui/2018_parquet_v3.parquet")
 
     df = df.filter(df.commentid.isNotNull()&df.commentissueid.isNotNull())
-    dfissue = df_old.filter(df.issueid.isNotNull())
+    dfissue = df_old.filter(df_old.issueid.isNotNull())
 
     
     def sorter(l):
