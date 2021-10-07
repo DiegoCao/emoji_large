@@ -42,7 +42,7 @@ import pyspark.sql.functions as func
 from pyspark.sql import Window
 import operator
 if __name__ == "__main__":
-    sc_name = "process"
+    sc_name = "Conversation Issue"
     sc = SparkContext(conf=SparkConf().setAppName(sc_name))
     sc.addFile("./emoji-test.txt")
     sc.setLogLevel('WARN')
