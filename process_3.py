@@ -66,12 +66,12 @@ if __name__ == "__main__":
         .alias("templist"))
 
     # w = Window.partitionby()
-    dfi = dfi.groupby('issueid')\
-        .agg(func.collect_list(func.struct("created_time", "has_emoji"))\
-        .alias("templist"))
+    # dfi = dfi.groupby('issueid')\
+    #     .agg(func.collect_list(func.struct("created_time", "has_emoji"))\
+    #     .alias("templist"))
     
-    # df = df.select("commentissueid", sort_udf("templist") \
-    #     .alias("sorted_list")) \
+    dfi = dfi.select("issueid", sort_udf("templist") \
+        .alias("sorted_list")) \
 
     
         # .show(truncate = False)
