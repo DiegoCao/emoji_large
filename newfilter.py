@@ -9,7 +9,7 @@ from pyspark.sql import SparkSession
 def get_ranges(nums):
     """Reduce a list of integers to tuples of local maximums and minimums.
 
-    :param nums: List of integers.
+    :param nums: List of integers.、
     :return ranges: List of tuples showing local minimums and maximums
     """
     nums = sorted(nums)

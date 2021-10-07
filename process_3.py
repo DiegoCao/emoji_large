@@ -53,20 +53,29 @@ if __name__ == "__main__":
     df = spark.read.parquet("/user/hangrui/2018_parquet_v3.parquet")
 
     df = df.filter(df.commentid.isNotNull()&df.commentissueid.isNotNull())
+    dfissue = df.filter(df.issueid.isNotNull())
+
+    
     def sorter(l):
         res = sorted(l, key=operator.itemgetter(0))
         return [item[1] for item in res]
     sort_udf = func.udf(sorter)
 
+    dfi = dfissue.groupby('issueid')\
+        .agg(func.collect_list(func.struct("created_time", "has_emoji"))\
+        .alias("templist"))
+
     # w = Window.partitionby()
-    df = df.groupby('commentissueid')\
+    dfi = dfi.groupby('issueid')\
         .agg(func.collect_list(func.struct("created_time", "has_emoji"))\
         .alias("templist"))
     
-    df = df.select("commentissueid", sort_udf("templist") \
-        .alias("sorted_list")) \
+    # df = df.select("commentissueid", sort_udf("templist") \
+    #     .alias("sorted_list")) \
+
+    
         # .show(truncate = False)
     
-    df.write.format("csv").option("header", "true").save("/user/hangrui/new/conversation_comment_list")
+    dfi.write.format("csv").option("header", "true").save("/user/hangrui/new/conversation_comment_list_issueonly")
 
     df.show()
