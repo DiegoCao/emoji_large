@@ -71,11 +71,17 @@ if __name__ == "__main__":
     #     .alias("templist"))
     
     dfi = dfi.select("issueid", sort_udf("templist") \
-        .alias("sorted_list")) \
+        .alias("comment_list")) \
 
+    dfci = df.groupby('commentissueid')\
+            .agg(func.collect_list(func.struct("created_time", "has_emoji"))\
+            .alias("templist"))
     
-        # .show(truncate = False)
-    
+    dfci = dfci.select("commentissueid", sort_udf("templist").alias("comment_lis"))
+
+    dfnew = dfci.join(dfi, dfi.issueid==dfci.commentissueid, 'outer')
+
+    dfnew.write.format("csv").option("header", "true").save("/user/hangrui/new/conver")
     dfi.write.format("csv").option("header", "true").save("/user/hangrui/new/conversation_comment_list_issueonly")
 
     df.show()
