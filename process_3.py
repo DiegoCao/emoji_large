@@ -60,7 +60,7 @@ if __name__ == "__main__":
 
     df = df.join(issueemoji, df.issueid==issueemoji.issueid, 'outer')
     df = df.join(commentemoji, commentemoji.commentid==df.commentid, 'outer')
-
+    df.show()
     print('the row number is :', df.count())
 
 
