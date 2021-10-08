@@ -59,7 +59,7 @@ if __name__ == "__main__":
 
     commentemoji = df.groupby('commentid').agg(func.collect_list('emojis').alias("commentemoji"))
     myudf = func.udf(getSetlen)
-    issueemoji = issueemoji.select("issueid", myudf("issueemojicnt").alias("issueemojicnt"))
+    issueemoji = issueemoji.select("issueid", myudf("issueemoji").alias("issueemojicnt"))
     commentemoji = commentemoji.select("commentid", myudf("commentemoji").alias("commentemojicnt"))
     df = df.join(issueemoji, 'issueid', how='outer')
     df = df.join(commentemoji, 'commentid', how='outer')
