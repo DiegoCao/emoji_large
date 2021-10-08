@@ -60,7 +60,7 @@ if __name__ == "__main__":
 
     df = df.join(issueemoji, df.issueid==issueemoji.issueid, 'outer')
     df = df.join(commentemoji, commentemoji.commentid==df.commentid, 'outer')
-    df.show()
+    
     df.write.format("csv").option("header", "true").save("/user/hangrui/new/conversation_new")
     print('the row number is :', df.count())
 
