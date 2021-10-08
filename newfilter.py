@@ -504,4 +504,4 @@ def analysis_DF():
 
     
 if __name__ == '__main__':
-    main()
+    testsmall()
