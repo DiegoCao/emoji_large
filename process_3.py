@@ -55,14 +55,18 @@ if __name__ == "__main__":
     df = spark.read.parquet("/user/hangrui/2018_parquet_v3.parquet")
     print('the original number of rows: ', df.count())
 
-    issueemoji = df.groupby('issueid').agg(func.collect_list('emojis').alias("issueemoji"))
+    res = df.select('commentissueid', 'rid').distinct()
 
-    commentemoji = df.groupby('commentid').agg(func.collect_list('emojis').alias("commentemoji"))
-    myudf = func.udf(getSetlen)
-    issueemoji = issueemoji.select("issueid", myudf("issueemoji").alias("issueemojicnt"))
-    commentemoji = commentemoji.select("commentid", myudf("commentemoji").alias("commentemojicnt"))
-    issueemoji.write.format("csv").option("header", "true").save("/user/hangrui/new/issuecntemoji")
-    commentemoji.write.format("csv").option("header", "true").save("/user/hangrui/new/commentcntemoji")
+    res.write.format("csv").option("header", "true").save("/user/hangrui/conversation/issueridmap")
+
+    # issueemoji = df.groupby('issueid').agg(func.collect_list('emojis').alias("issueemoji"))
+
+    # commentemoji = df.groupby('commentid').agg(func.collect_list('emojis').alias("commentemoji"))
+    # myudf = func.udf(getSetlen)
+    # issueemoji = issueemoji.select("issueid", myudf("issueemoji").alias("issueemojicnt"))
+    # commentemoji = commentemoji.select("commentid", myudf("commentemoji").alias("commentemojicnt"))
+    # issueemoji.write.format("csv").option("header", "true").save("/user/hangrui/new/issuecntemoji")
+    # commentemoji.write.format("csv").option("header", "true").save("/user/hangrui/new/commentcntemoji")
 
 
 
@@ -114,6 +118,6 @@ if __name__ == "__main__":
     # dfnew = dfci.join(dfi, dfi.issueid==dfci.commentissueid, 'outer')
 
     # dfnew.write.format("csv").option("header", "true").save("/user/hangrui/new/conver")
-    # dfi.write.format("csv").option("header", "true").save("/user/hangrui/new/conversation_comment_list_issueonly")
+    # ç
 
     # df.show()
