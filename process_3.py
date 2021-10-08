@@ -58,8 +58,9 @@ if __name__ == "__main__":
     issueemoji = df.groupby('issueid').agg(func.collect_set('emojis'))
     commentemoji = df.groupby('commentid').agg(func.collect_set('emojis'))
 
-    df = df.join(issueemoji, df.issueid==issueemoji.issueid, 'outer')
-    df = df.join(commentemoji, commentemoji.commentid==df.commentid, 'outer')
+    df = df.join(issueemoji, 'issueid', how='outer')
+    df = df.join(commentemoji, 
+    'commentid', how='outer')
     
     df.write.format("csv").option("header", "true").save("/user/hangrui/new/conversation_new")
     print('the row number is :', df.count())
