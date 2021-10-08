@@ -55,14 +55,17 @@ if __name__ == "__main__":
     df = spark.read.parquet("/user/hangrui/2018_parquet_v3.parquet")
     print('the original number of rows: ', df.count())
 
-    issueemoji = df.groupby('issueid').agg(func.collect_set('emojis'))
-    commentemoji = df.groupby('commentid').agg(func.collect_set('emojis'))
+    issueemoji = df.groupby('issueid').agg(func.collect_list('emojis').alias("issueemoji"))
 
+    commentemoji = df.groupby('commentid').agg(func.collect_list('emojis').alias("commentemoji"))
+    myudf = func.udf(getSetlen)
+    issueemoji = issueemoji.select("issueid", myudf("issueemojicnt").alias("issueemojicnt"))
+    commentemoji = commentemoji.select("commentid", myudf("commentemoji").alias("commentemojicnt"))
     df = df.join(issueemoji, 'issueid', how='outer')
-    df = df.join(commentemoji, 
-    'commentid', how='outer')
+    df = df.join(commentemoji, 'commentid', how='outer')
+    df.show()
     
-    df.write.format("csv").option("header", "true").save("/user/hangrui/new/conversation_new")
+    # df.write.format("csv").option("header", "true").save("/user/hangrui/new/conversation_new")
     print('the row number is :', df.count())
 
 
