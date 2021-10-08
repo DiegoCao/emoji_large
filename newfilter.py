@@ -257,10 +257,10 @@ def extract_emoji_hashtag(emoji_json, regex):
     if len(emojis) > 0:
         dic['has_emoji'] = True
         
+    dic['num_emoji'] = len(emojis)
 
     
     dic['msg'] = msg
-    dic['emojis'] = emojis
     
     return dic
 
@@ -282,8 +282,7 @@ def main():
     files = sc.textFile(raw_root + "2018-*.json.gz")
     text = files.map(lambda line: extract_emoji_hashtag(line, regex))
     df = text.toDF()
-    df.write.save('2018_parquet_v3.parquet')
-    df.coalesce(1).write.format("parquet").mode("append").save("2018_single.parquet")
+    df.format("csv").mode("append").save("2018_csvversion")
     print('sucessfully saved')
 
     sc.stop()
@@ -321,7 +320,8 @@ def testsmall():
     files = sc.textFile(raw_root + "2018-01-01*.json.gz")
     text = files.map(lambda line: extract_emoji_hashtag(line, regex))
     df = text.toDF()
-    df.write.save('testday_v2.csv')
+    df.format("csv").mode("append").save("2018_csvversion")
+
     print('sucessfully saved')
 
     sc.stop()
