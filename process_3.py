@@ -58,19 +58,22 @@ if __name__ == "__main__":
     issueemoji = df.groupby('issueid').agg(func.collect_list('emojis').alias("issueemoji"))
 
     commentemoji = df.groupby('commentid').agg(func.collect_list('emojis').alias("commentemoji"))
-    myudf = func.udf(getSetlen)
-    issueemoji = issueemoji.select("issueid", myudf("issueemoji").alias("issueemojicnt"))
-    commentemoji = commentemoji.select("commentid", myudf("commentemoji").alias("commentemojicnt"))
+    issueemoji.write.format("csv").option("header", "true").save("/user/hangrui/new/issuecntemoji")
+    commentemoji.write.format("csv").option("header", "true").save("/user/hangrui/new/commentcntemoji")
 
-    # df.show()
-    issueemoji.show()
-    commentemoji.show()
+    # myudf = func.udf(getSetlen)
+    # issueemoji = issueemoji.select("issueid", myudf("issueemoji").alias("issueemojicnt"))
+    # commentemoji = commentemoji.select("commentid", myudf("commentemoji").alias("commentemojicnt"))
+
+    # # df.show()
+    # issueemoji.show()
+    # commentemoji.show()
     
-    df = df.select('rid', 'issueid', 'commentid').distinct()
+    # df = df.select('rid', 'issueid', 'commentid').distinct()
 
-    df = df.alias('a').join(issueemoji.alias('b'), issueemoji.issueid == df.issueid, 'outer')\
-            .join(commentemoji.alias('c'), commentemoji.commentid==df.commentid, how='outer')\
-                .select('a.rid', 'a.commentid', 'a.issueid', 'b.issueemojicnt', 'c.commentemojicnt')
+    # df = df.alias('a').join(issueemoji.alias('b'), issueemoji.issueid == df.issueid, 'outer')\
+    #         .join(commentemoji.alias('c'), commentemoji.commentid==df.commentid, how='outer')\
+    #             .select('a.rid', 'a.commentid', 'a.issueid', 'b.issueemojicnt', 'c.commentemojicnt')
     
     df.write.format("csv").option("header", "true").save("/user/hangrui/new/conversation_new")
     print('the row number is :', df.count())
