@@ -65,7 +65,7 @@ if __name__ == "__main__":
     df = df.join(commentemoji, 'commentid', how='outer')
     df.show()
     
-    # df.write.format("csv").option("header", "true").save("/user/hangrui/new/conversation_new")
+    df.write.format("csv").option("header", "true").save("/user/hangrui/new/conversation_new")
     print('the row number is :', df.count())
 
 
