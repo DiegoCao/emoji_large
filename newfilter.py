@@ -320,8 +320,7 @@ def testsmall():
     files = sc.textFile(raw_root + "2018-01-01*.json.gz")
     text = files.map(lambda line: extract_emoji_hashtag(line, regex))
     df = text.toDF()
-    df.format("csv").mode("append").save("2018_csvversion")
-
+    df.write.save('testday_v2.csv') 
     print('sucessfully saved')
 
     sc.stop()
@@ -337,7 +336,8 @@ def analysis():
     spark = SparkSession(sc)
     raw_root = "/user/hangrui/"
     # files = sc.textFile("/user/hangrui/testday.parquet").filter(lambda t:filter2(t)).map(lambda t:line2json(t))
-    files = spark.read.parquet("/user/hangrui/testday.parquet")
+    # files = spark.read.parquet("/user/hangrui/testday.parquet")
+    df.write.save('testday_v2.csv') 
     
     files.show()
 
@@ -504,4 +504,4 @@ def analysis_DF():
 
     
 if __name__ == '__main__':
-    testsmall()
+    main()
