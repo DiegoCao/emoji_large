@@ -60,11 +60,12 @@ if __name__ == "__main__":
 
 
     issueemoji = df.groupby('issueid').agg(func.collect_list('emojis').alias("issueemoji"))
-
     commentemoji = df.groupby('commentid').agg(func.collect_list('emojis').alias("commentemoji"))
     myudf = func.udf(getSetlen)
     issueemoji = issueemoji.select("issueid", myudf("issueemoji").alias("issueemojicnt"))
     commentemoji = commentemoji.select("commentid", myudf("commentemoji").alias("commentemojicnt"))
+
+
     # issueemoji.write.format("csv").option("header", "true").save("/user/hangrui/new/issuecntemoji")
     # commentemoji.write.format("csv").option("header", "true").save("/user/hangrui/new/commentcntemoji")
 
@@ -93,7 +94,7 @@ if __name__ == "__main__":
     def sorter(l):
         res = sorted(l, key=operator.itemgetter(0))
         return [item[1] for item in res]
-        
+
     sort_udf = func.udf(sorter)
 
     dfi = dfissue.groupby('issueid')\
@@ -102,11 +103,10 @@ if __name__ == "__main__":
 
     # # w = Window.partitionby()
     dfi = dfi.groupby('issueid')\
-        .agg(func.collect_list(func.struct("created_time", "has_emoji"))\
+        .agg(func.collect_list(func.struct("created_time", "has_emoji"))
         .alias("templist"))
-    
-    dfi = dfi.select("issueid", sort_udf("templist") \
-        .alias("comment_list")) \
+    dfi.show()
+    dfi = dfi.select("issueid", sort_udf("templist").alias("comment_list")) 
         
     # dfi.show()
 
