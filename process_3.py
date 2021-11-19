@@ -103,7 +103,7 @@ if __name__ == "__main__":
 
     # # w = Window.partitionby()
     dfi = dfi.groupby('issueid')\
-        .agg(func.collect_list(func.struct($"created_time", $"has_emoji")).as("templist"))
+        .agg(func.collect_list(func.struct("created_time", "has_emoji").as("templist"))
     dfi.show()
 
     dfi = dfi.select("issueid", sort_udf("templist").alias("comment_list")) 
@@ -121,4 +121,4 @@ if __name__ == "__main__":
     dfnew.write.format("csv").option("header", "true").save("/user/hangrui/new/conver")
     # ç
 
-    # df.show()
+    # df.show(
