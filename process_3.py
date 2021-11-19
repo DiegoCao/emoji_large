@@ -112,8 +112,8 @@ if __name__ == "__main__":
     # dfi.show()
 
     dfci = df.groupby('commentissueid')\
-            .agg(func.collect_list(func.struct("created_time", "has_emoji")))\
-            .withColumnRenamed("issueid", "templist")
+            .agg(func.collect_list(func.struct("created_time", "has_emoji"))\
+            .alias("templist"))
     
     dfci = dfci.select("commentissueid", sort_udf("templist").alias("comment_lis"))
 
