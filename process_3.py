@@ -102,8 +102,8 @@ if __name__ == "__main__":
         .alias("templist"))
 
     # # w = Window.partitionby()
-    dfi = dfi.groupby('issueid')\
-        .agg(func.collect_list(func.struct("created_time", "has_emoji"))).withColumnRenamed("issueid", "templist")
+    # dfi = dfi.groupby('issueid')\
+    #     .agg(func.collect_list(func.struct("created_time", "has_emoji"))).withColumnRenamed("issueid", "templist")
     
     
     dfi.show()
@@ -119,7 +119,7 @@ if __name__ == "__main__":
 
     dfnew = dfci.join(dfi, dfi.issueid==dfci.commentissueid, 'outer')
 
-    dfnew.write.format("csv").option("header", "true").save("/user/hangrui/new/conver")
+    dfnew.write.format("csv").option("header", "true").save("/user/hangrui/new/conver_time")
     # ç
 
     # df.show(
