@@ -21,7 +21,7 @@ def removeEmail(text):
     pattern = re.compile(e)
 
 def emoji_entries_construction():
-    with io.open('../emoji-test.txt', 'rt', encoding="utf8") as file:
+    with io.open('emoji-test.txt', 'rt', encoding="utf8") as file:
         emoji_raw = file.read()
     EmojiEntry = namedtuple('EmojiEntry', ['codepoint', 'status', 'emoji', 'name', 'group', 'sub_group'])
     emoji_entries = []
