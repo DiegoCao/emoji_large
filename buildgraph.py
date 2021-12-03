@@ -76,7 +76,6 @@ if __name__ == "__main__":
     def getid(msgstruct):
         return msgstruct[len(msgstruct)-1]["commentissueid"]
     myudf = func.udf(getMsg)
-    comment = comment.withColumns()
 
     issue = issue.groupby("issueid").agg(func.collect_list("msg")).alias("issuemsglist")
     issue.select("issueid", myudf("issuemsglist"))
@@ -86,6 +85,8 @@ if __name__ == "__main__":
 
     comment.show()
     issue.show()
-        
+    issue.write.format("csv").option("header", "true").save("/user/hangrui/conversation/issuemsg")
+    comment.write.format("csv").option("header", "true").save("/user/hangrui/conversation/commentmsg")
+
 
 
