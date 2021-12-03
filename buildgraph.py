@@ -77,11 +77,11 @@ if __name__ == "__main__":
         return msgstruct[len(msgstruct)-1]["commentissueid"]
     myudf = func.udf(getMsg)
 
-    issue = issue.groupby("issueid").agg(func.collect_list("msg")).alias("issuemsglist")
+    issue = issue.groupby("issueid").agg(func.collect_list("msg")).withColumnRenamed("issueid","issuemsglist")
     issue.select("issueid", myudf("issuemsglist"))
     myudf2 = func.udf(getMsg2)
     myudf3 = func.udf(getid)
-    comment = comment.select("commentid", myudf2("issuemsglist"), myudf3("issuemsglist"))
+    comment = comment.select("commentid", myudf2("commentmsglist"), myudf3("commentmsglist"))
 
     comment.show()
     issue.show()
