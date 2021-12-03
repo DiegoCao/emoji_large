@@ -95,7 +95,7 @@ if __name__ == "__main__":
     
     def sorter(l):
         res = sorted(l, key=operator.itemgetter(0))
-        return [item[1] for item in res]
+        return [item[1] for item in res], [item[2] for item in res]
 
     sort_udf = func.udf(sorter)
 
@@ -109,7 +109,7 @@ if __name__ == "__main__":
     
     
     dfi.show()
-    dfi = dfi.select("issueid", sort_udf("templist").alias("comment_list")) 
+    dfi = dfi.select("issueid", sort_udf("templist").alias("comment_list", "issuemsg")) 
         
     # dfi.show()
 
@@ -117,7 +117,7 @@ if __name__ == "__main__":
             .agg(func.collect_list(func.struct("created_time", "has_emoji","msg"))\
             .alias("templist"))
     
-    dfci = dfci.select("commentissueid", sort_udf("templist").alias("comment_lis"))
+    dfci = dfci.select("commentissueid", sort_udf("templist").alias("comment_lis", "commentmsg"))
 
     dfnew = dfci.join(dfi, dfi.issueid==dfci.commentissueid, 'outer')
     print(dfnew.head())
