@@ -8,6 +8,7 @@ from pyspark.sql import SparkSession
 from pyspark.sql.functions import udf, countDistinct
 from pyspark.sql.types import IntegerType, FloatType
 import pyspark.sql.functions as func
+import pickle
 import networkx as nx
 def get_ranges(nums):
     """Reduce a list of integers to tuples of local maximums and minimums.
@@ -166,13 +167,13 @@ import pyspark.sql.functions as func
 from pyspark.sql import Window
 import operator
 
-def buildG(texts, regex, G):
+WINSIZE = 2
+def buildG(tokenslist, regex, G):
     """
         Only consider the one within emoji usage
     """
     
-    for text in texts:
-        tokens = re.findall(regex, text)
+    for tokens in tokenslist:
         for idx, token in enumerate(tokens):
             if is_emoji(token):
                 window = tokens[max(0, idx-WINSIZE),min(len(tokens)-1,idx+WINSIZE)]
@@ -226,10 +227,10 @@ if __name__ == "__main__":
     myudf = func.udf(getMsg)
 
     issue = issue.groupby("issueid").agg(func.collect_list("msg").alias("issuemsglist"))
-    issue = issue.select("issueid", myudf("issuemsglist").alias("msg"))
+    issue = issue.select("issueid", myudf("issuemsglist")).withColumnRenamed("issueid","msg")
     myudf2 = func.udf(getMsg2)
     myudf3 = func.udf(getid)
-    comment = comment.select("commentid", myudf2("commentmsglist").alias("msg"), myudf3("commentmsglist").alias("commentissueid"))
+    comment = comment.select("commentid", myudf2("commentmsglist"), myudf3("commentmsglist")).withColumnRenamed("commentid","msg","commentissueid")
 
     def tokenfunc(msg):
         tokens = re.findall(all_emoji_regex, msg)
@@ -241,7 +242,14 @@ if __name__ == "__main__":
 
     comment.show()
     issue.show()
+
+    commmenttokens = comment["commenttokens"]
+    issuetokens = issue["issuetokens"]
     G = nx.Graph()
+
+    buildG(commmenttokens, all_emoji_regex, G)
+    buildG(issuetokens,all_emoji_regex, G)
+    pickle.dump(G, open("token_graph.pck", "wb"))
     # issue.write.format("csv").option("header", "true").save("/user/hangrui/conversation/issuemsg")
     # comment.write.format("csv").option("header", "true").save("/user/hangrui/conversation/commentmsg")
 
