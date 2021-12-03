@@ -7,6 +7,8 @@ from collections import namedtuple, Counter
 from pyspark.sql import SparkSession
 from pyspark.sql.functions import udf, countDistinct
 from pyspark.sql.types import IntegerType, FloatType
+import pyspark.sql.functions as func
+
 
 def udffilter(x):
     
@@ -59,9 +61,31 @@ if __name__ == "__main__":
 
     res = df.select('commentissueid', 'rid').distinct()
 
+    
+    comment = df.filter(df.commentid.isNotNull()&df.commentissueid.isNotNull())
+    issue = df.filter(df.issueid.isNotNull())
+    comment = comment.select("commentid", "commentissueid", "msg")
+    issue = issue.select("issueid", "msg")
+    comment = comment.groupby("commentid")\
+                        .agg(func.collect_list(func.struct("commentissueid", "msg")))\
+                        .alias("commmentmsglist")
+    def getMsg(msgs):
+        return msgs[len(msgs)-1]
+    def getMsg2(msgstruct):
+        return msgstruct[len(msgstruct)-1]["msg"]
+    def getid(msgstruct):
+        return msgstruct[len(msgstruct)-1]["commentissueid"]
+    myudf = func.udf(getMsg)
+    comment = comment.withColumns()
 
-    issueemoji = df.groupby('issueid').agg(func.collect_list('emojis').alias("issueemoji"))
-    commentemoji = df.groupby('commentid').agg(func.collect_list('emojis').alias("commentemoji"))
+    issue = issue.groupby("issueid").agg(func.collect_list("msg")).alias("issuemsglist")
+    issue.select("issueid", myudf("issuemsglist"))
+    myudf2 = func.udf(getMsg2)
+    myudf3 = func.udf(getid)
+    comment = comment.select("commentid", myudf2("issuemsglist"), myudf3("issuemsglist"))
 
-    issueemoji.show()
+    comment.show()
+    issue.show()
+        
+
 
