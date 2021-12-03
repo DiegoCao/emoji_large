@@ -231,9 +231,9 @@ if __name__ == "__main__":
     issue.show()
     myudf2 = func.udf(getMsg2)
     myudf3 = func.udf(getid)
-    comment = comment.select("commentid", myudf2("commentmsglist"), myudf3("commentmsglist"))
+    comment = comment.select("commentid", myudf2("commentmsglist"))
     comment.show()
-    comment =  comment.withColumnRenamed("commentid","msg","commentissueid")
+    comment =  comment.withColumnRenamed("commentid","msg")
 
     def tokenfunc(msg):
         tokens = re.findall(all_emoji_regex, msg)
