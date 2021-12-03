@@ -44,7 +44,7 @@ import operator
 
 
 if __name__ == "__main__":
-    sc_name = "Conversation Issue"
+    sc_name = "Build Graph"
     sc = SparkContext(conf=SparkConf().setAppName(sc_name))
     sc.addFile("./emoji-test.txt")
     sc.setLogLevel('ERROR')
