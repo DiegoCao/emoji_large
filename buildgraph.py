@@ -68,7 +68,7 @@ if __name__ == "__main__":
     issue = issue.select("issueid", "msg")
     comment = comment.groupby("commentid")\
                         .agg(func.collect_list(func.struct("commentissueid", "msg")))\
-                        .alias("commmentmsglist")
+                        .withColumnRenamed("commentid","commentmsglist")
     def getMsg(msgs):
         return msgs[len(msgs)-1]
     def getMsg2(msgstruct):
