@@ -8,6 +8,7 @@ from pyspark.sql import SparkSession
 from pyspark.sql.functions import udf, countDistinct
 from pyspark.sql.types import IntegerType, FloatType
 import pyspark.sql.functions as func
+import networkx as nx
 def get_ranges(nums):
     """Reduce a list of integers to tuples of local maximums and minimums.
 
@@ -165,8 +166,33 @@ import pyspark.sql.functions as func
 from pyspark.sql import Window
 import operator
 
+def buildG(texts, regex, G):
+    """
+        Only consider the one within emoji usage
+    """
+    
+    for text in texts:
+        tokens = re.findall(regex, text)
+        for idx, token in enumerate(tokens):
+            if is_emoji(token):
+                window = tokens[max(0, idx-WINSIZE),min(len(tokens)-1,idx+WINSIZE)]
+                idx = 0
+                if token not in G.nodes():
+                    G.add_node(token)
+                for w in window:
+                    if (idx == WINSIZE):
+                        continue
+                    idx += 1
+                    if w not in G.nodes():
+                        G.add_node(w)
+                    G.add_edge(w,token)
+
+
 
 if __name__ == "__main__":
+
+    emoji_entries = emoji_entries_construction()
+    all_emoji_regex, emoji_dict = construct_regex(emoji_entries)
     sc_name = "Build Graph"
     sc = SparkContext(conf=SparkConf().setAppName(sc_name))
     sc.addFile("./emoji-test.txt")
@@ -181,7 +207,7 @@ if __name__ == "__main__":
 
 
     res = df.select('commentissueid', 'rid').distinct()
-
+    df = df.filter(df.has_emoji==True)
     
     comment = df.filter(df.commentid.isNotNull()&df.commentissueid.isNotNull())
     issue = df.filter(df.issueid.isNotNull())
@@ -205,11 +231,11 @@ if __name__ == "__main__":
     myudf3 = func.udf(getid)
     comment = comment.select("commentid", myudf2("commentmsglist").alias("msg"), myudf3("commentmsglist").alias("commentissueid"))
     
-    emoji_entries = emoji_entries_construction()
-    all_emoji_regex, emoji_dict = construct_regex(emoji_entries)
 
-    def tokenfunc(lis):
-        tokens = re.findall()
+
+    def tokenfunc(msg):
+        tokens = re.findall(all_emoji_regex, msg)
+
 
     tokenudf = func.udf(tokenfunc)
     issue = issue.select("issueid",tokenfunc("msg").alias("issuetokens"))
@@ -217,6 +243,13 @@ if __name__ == "__main__":
 
     comment.show()
     issue.show()
+
+
+        
+
+    G = nx.Graph()
+
+    
 
     # issue.write.format("csv").option("header", "true").save("/user/hangrui/conversation/issuemsg")
     # comment.write.format("csv").option("header", "true").save("/user/hangrui/conversation/commentmsg")
