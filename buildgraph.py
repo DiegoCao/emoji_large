@@ -240,8 +240,8 @@ if __name__ == "__main__":
         return tokens
 
     tokenudf = func.udf(tokenfunc)
-    issue = issue.select("issueid",tokenfunc("msg").alias("issuetokens"))
-    comment = comment.select("commentid", tokenfunc("msg").alias("commenttokens"))
+    issue = issue.select("issueid",tokenfunc("msg")).withColumnRenamed("issueid","issuetokens")
+    comment = comment.select("commentid", tokenfunc("msg")).withColumnRenamed("commentid","commenttokens")
 
     comment.show()
     issue.show()
