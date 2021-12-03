@@ -65,9 +65,12 @@ if __name__ == "__main__":
 
     myudf = func.udf(getSetlen)
     issueemoji = issueemoji.select("issueid", myudf("issueemoji").alias("issueemojicnt"))
+    issueemoji.show()
+    # issueemoji = issueemoji.combineb
+
     commentemoji = commentemoji.select("commentid", myudf("commentemoji").alias("commentemojicnt"))
 
-
+    commentemoji.show()
     # issueemoji.write.format("csv").option("header", "true").save("/user/hangrui/new/issuecntemoji")
     # commentemoji.write.format("csv").option("header", "true").save("/user/hangrui/new/commentcntemoji")
 
@@ -89,40 +92,40 @@ if __name__ == "__main__":
 
 
 
-    df = df.filter(df.commentid.isNotNull()&df.commentissueid.isNotNull())
-    dfissue = df_old.filter(df_old.issueid.isNotNull())
+    # df = df.filter(df.commentid.isNotNull()&df.commentissueid.isNotNull())
+    # dfissue = df_old.filter(df_old.issueid.isNotNull())
 
     
-    def sorter(l):
-        res = sorted(l, key=operator.itemgetter(0))
-        return [item[1] for item in res], [item[2] for item in res]
+    # def sorter(l):
+    #     res = sorted(l, key=operator.itemgetter(0))
+    #     return [item[1] for item in res], [item[2] for item in res]
 
-    sort_udf = func.udf(sorter)
+    # sort_udf = func.udf(sorter)
 
-    dfi = dfissue.groupby('issueid')\
-        .agg(func.collect_list(func.struct("created_time", "has_emoji", "msg"))\
-        .alias("templist"))
+    # dfi = dfissue.groupby('issueid')\
+    #     .agg(func.collect_list(func.struct("created_time", "has_emoji", "msg"))\
+    #     .alias("templist"))
 
-    # # w = Window.partitionby()
-    # dfi = dfi.groupby('issueid')\
-    #     .agg(func.collect_list(func.struct("created_time", "has_emoji"))).withColumnRenamed("issueid", "templist")
+    # # # w = Window.partitionby()
+    # # dfi = dfi.groupby('issueid')\
+    # #     .agg(func.collect_list(func.struct("created_time", "has_emoji"))).withColumnRenamed("issueid", "templist")
     
     
-    dfi.show()
-    dfi = dfi.select("issueid", sort_udf("templist").alias("comment_list", "issuemsg")) 
-        
     # dfi.show()
+    # dfi = dfi.select("issueid", sort_udf("templist").alias("comment_list", "issuemsg")) 
+        
+    # # dfi.show()
 
-    dfci = df.groupby('commentissueid')\
-            .agg(func.collect_list(func.struct("created_time", "has_emoji","msg"))\
-            .alias("templist"))
+    # dfci = df.groupby('commentissueid')\
+    #         .agg(func.collect_list(func.struct("created_time", "has_emoji","msg"))\
+    #         .alias("templist"))
     
-    dfci = dfci.select("commentissueid", sort_udf("templist").alias("comment_lis", "commentmsg"))
+    # dfci = dfci.select("commentissueid", sort_udf("templist").alias("comment_lis", "commentmsg"))
 
-    dfnew = dfci.join(dfi, dfi.issueid==dfci.commentissueid, 'outer')
-    print(dfnew.head())
-    dfnew.write.format("csv").option("header", "true").save("/user/hangrui/new/conversation_msg")
+    # dfnew = dfci.join(dfi, dfi.issueid==dfci.commentissueid, 'outer')
+    # print(dfnew.head())
+    # dfnew.write.format("csv").option("header", "true").save("/user/hangrui/new/conversation_msg")
 
-    # ç
+    # # ç
 
-    # df.show(
+    # # df.show(
