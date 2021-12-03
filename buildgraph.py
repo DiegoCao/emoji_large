@@ -230,12 +230,10 @@ if __name__ == "__main__":
     myudf2 = func.udf(getMsg2)
     myudf3 = func.udf(getid)
     comment = comment.select("commentid", myudf2("commentmsglist").alias("msg"), myudf3("commentmsglist").alias("commentissueid"))
-    
-
 
     def tokenfunc(msg):
         tokens = re.findall(all_emoji_regex, msg)
-
+        return tokens
 
     tokenudf = func.udf(tokenfunc)
     issue = issue.select("issueid",tokenfunc("msg").alias("issuetokens"))
@@ -243,14 +241,7 @@ if __name__ == "__main__":
 
     comment.show()
     issue.show()
-
-
-        
-
     G = nx.Graph()
-
-    
-
     # issue.write.format("csv").option("header", "true").save("/user/hangrui/conversation/issuemsg")
     # comment.write.format("csv").option("header", "true").save("/user/hangrui/conversation/commentmsg")
 
