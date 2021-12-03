@@ -68,7 +68,7 @@ if __name__ == "__main__":
     issueemoji.show()
     # issueemoji = issueemoji.combineb
 
-    commentemoji = commentemoji.select("commentid", myudf("commentemoji").alias("commentemojicnt"))
+    commentemoji = commentemoji.x("commentid", myudf("commentemoji").alias("commentemojicnt"))
     commentemoji.show()
     # issueemoji.write.format("csv").option("header", "true").save("/user/hangrui/new/issuecntemoji")
     # commentemoji.write.format("csv").option("header", "true").save("/user/hangrui/new/commentcntemoji")
