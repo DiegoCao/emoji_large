@@ -228,20 +228,21 @@ if __name__ == "__main__":
 
     issue = issue.groupby("issueid").agg(func.collect_list("msg").alias("issuemsglist"))
     issue = issue.select("issueid", myudf("issuemsglist"))
-    issue.withColumnRenamed("issueid","msg")
+    issue.withColumnRenamed("getMsg(issuemsglist)","msg")
 
     issue.show()
     myudf2 = func.udf(getMsg2)
     myudf3 = func.udf(getid)
     comment = comment.select("commentid", myudf2("commentmsglist"))
     comment.show()
-    comment.withColumnRenamed("commentid","msg")
+    comment.withColumnRenamed("getMsg2(commentmsglist)","msg")
 
     def tokenfunc(msg):
         tokens = re.findall(all_emoji_regex, msg)
         return tokens
 
     tokenudf = func.udf(tokenfunc)
+    
     issue = issue.select("issueid",tokenudf("msg").alias("issuetokens"))
     issue.withColumnRenamed("issueid","issuetokens")
     comment = comment.select("commentid", tokenudf("msg"))
