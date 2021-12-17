@@ -177,7 +177,7 @@ def buildG(tokenslist, regex, G):
     for tokens in tokenslist:
         for idx, token in enumerate(tokens):
             if is_emoji(token):
-                window = tokens[max(0, idx-WINSIZE),min(len(tokens)-1,idx+WINSIZE)]
+                window = tokens[max(0, idx-WINSIZE):min(len(tokens)-1,idx+WINSIZE)]
                 idx = 0
                 if token not in G.nodes():
                     G.add_node(token)
