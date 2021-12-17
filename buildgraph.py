@@ -1,6 +1,7 @@
 import pandas
 from pyspark import SparkConf, SparkContext
 import json
+import pandas
 import re
 import io
 from collections import namedtuple, Counter
@@ -251,11 +252,13 @@ if __name__ == "__main__":
     comment.show()
     issue.show()
 
-    commmenttokens = comment["commenttokens"]
-    issuetokens = issue["issuetokens"]
+    # commenttokens = comment["commenttokens"]   
+    commenttokens = list(comment.select('commenttokens').toPandas()['commenttokens'])
+
+    issuetokens = list(issue.select("issuetokens").toPandas()['issuetokens'])
     G = nx.Graph()
 
-    buildG(commmenttokens, all_emoji_regex, G)
+    buildG(commenttokens, all_emoji_regex, G)
     buildG(issuetokens,all_emoji_regex, G)
     pickle.dump(G, open("token_graph.pck", "wb"))
     # issue.write.format("csv").option("header", "true").save("/user/hangrui/conversation/issuemsg")
