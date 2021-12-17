@@ -260,7 +260,7 @@ if __name__ == "__main__":
 
     buildG(commenttokens, all_emoji_regex, G)
     buildG(issuetokens,all_emoji_regex, G)
-    pickle.dump(G, open("token_graph.pck", "wb"))
+    pickle.dump(G, open("/user/hangrui/token_graph.pck", "wb"))
     # issue.write.format("csv").option("header", "true").save("/user/hangrui/conversation/issuemsg")
     # comment.write.format("csv").option("header", "true").save("/user/hangrui/conversation/commentmsg")
 
