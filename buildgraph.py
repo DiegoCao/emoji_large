@@ -1,4 +1,3 @@
-import pandas
 from pyspark import SparkConf, SparkContext
 import json
 import pandas
