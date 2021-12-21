@@ -242,6 +242,7 @@ if __name__ == "__main__":
 
     def tokenfunc(msg):
         tokens = re.findall(all_emoji_regex, msg)
+        print(tokens)
         return tokens
 
     tokenudf = func.udf(tokenfunc)
@@ -259,10 +260,9 @@ if __name__ == "__main__":
 
     issuetokens = list(issue.select("issuetokens").toPandas()['issuetokens'])
     G = nx.Graph()
-
     buildG(commenttokens, all_emoji_regex, G)
     buildG(issuetokens,all_emoji_regex, G)
-    pickle.dump(G, open("/user/hangrui/token_graph.pck", "wb"))
+    pickle.dump(G, open("/user/hangrui/token_graph_day.pck", "wb"))
     # issue.write.format("csv").option("header", "true").save("/user/hangrui/conversation/issuemsg")
     # comment.write.format("csv").option("header", "true").save("/user/hangrui/conversation/commentmsg")
 
