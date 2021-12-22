@@ -316,11 +316,12 @@ def testsmall():
     regex, emoji_dict = construct_regex(emoji_entries)
 	
     raw_root = "/user/hangrui/data/"
-    output = "/user/hangrui/"    
+    # output = "/user/hangrui/"    
     files = sc.textFile(raw_root + "2018-01-01*.json.gz")
     text = files.map(lambda line: extract_emoji_hashtag(line, regex))
     df = text.toDF()
-    df.write.save('2018_day.parquet') 
+    print(df.head())
+    # df.write.save('2018_day.parquet') 
     print('sucessfully saved')
 
     sc.stop()
