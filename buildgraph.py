@@ -106,11 +106,13 @@ def construct_regex(emoji_entries):
     # sorting by length in decreasing order is extremely important as demonstrated above
     multi_codepoint_emoji_sorted = sorted(multi_codepoint_emoji, key=len, reverse=True)
     print(type(multi_codepoint_emoji_sorted))
+    
     regexword = r'\w+'
+    
     multi_codepoint_emoji_sorted.append(regexword)
+
     # join with a "|" to function as an "or" in the regex
     multi_codepoint_emoji_joined = '|'.join(multi_codepoint_emoji_sorted)
-
     single_codepoint_emoji = []
 
     for code in [c.codepoint.split() for c in emoji_entries]:
@@ -256,7 +258,6 @@ if __name__ == "__main__":
 
     # commenttokens = comment["commenttokens"]   
     commenttokens = list(comment.select('commenttokens').toPandas()['commenttokens'])
-
     issuetokens = list(issue.select("issuetokens").toPandas()['issuetokens'])
     G = nx.Graph()
     buildG(commenttokens, all_emoji_regex, G)

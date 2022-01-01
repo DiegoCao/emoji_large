@@ -321,7 +321,7 @@ def testsmall():
     text = files.map(lambda line: extract_emoji_hashtag(line, regex))
     df = text.toDF()
     print(df.head())
-    # df.write.save('2018_day.parquet') 
+    df.write.save('2018_day.parquet') 
     print('sucessfully saved')
 
     sc.stop()
