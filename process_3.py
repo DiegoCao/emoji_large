@@ -51,8 +51,8 @@ if __name__ == "__main__":
     spark = SparkSession(sc)
     spark.sparkContext.setLogLevel('WARN')
     raw_root = "/user/hangrui/"
-    df_old = spark.read.parquet("/user/hangrui/2018_day.parquet")
-    df = spark.read.parquet("/user/hangrui/2018_day.parquet")
+    df_old = spark.read.parquet("/user/hangrui/2018_day_new.parquet")
+    df = spark.read.parquet("/user/hangrui/2018_day_new.parquet")
     print('the df head is ', df.head())
     print('the original number of rows: ', df.count())
 
