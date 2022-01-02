@@ -177,18 +177,18 @@ def buildG(tokenslist, regex, G):
     
     for tokens in tokenslist:
         for idx, token in enumerate(tokens):
-            if is_emoji(token):
-                window = tokens[max(0, idx-WINSIZE):min(len(tokens)-1,idx+WINSIZE)]
-                idx = 0
-                if token not in G.nodes():
-                    G.add_node(token)
-                for w in window:
-                    if (idx == WINSIZE):
-                        continue
-                    idx += 1
-                    if w not in G.nodes():
-                        G.add_node(w)
-                    G.add_edge(w,token)
+            # if is_emoji(token):
+            window = tokens[max(0, idx-WINSIZE):min(len(tokens)-1,idx+WINSIZE)]
+            idx = 0
+            if token not in G.nodes():
+                G.add_node(token)
+            for w in window:
+                if (idx == WINSIZE):
+                    continue
+                idx += 1
+                if w not in G.nodes():
+                    G.add_node(w)
+                G.add_edge(w,token)
 
 
 
@@ -263,7 +263,7 @@ if __name__ == "__main__":
     
     buildG(commenttokens, all_emoji_regex, G)
     buildG(issuetokens,all_emoji_regex, G)
-    pickle.dump(G, open("token_graph_day.pck", "wb"))
+    pickle.dump(G, open("token_graph_day1.pck", "wb"))
     
     # issue.write.format("csv").option("header", "true").save("/user/hangrui/conversation/issuemsg")
     # comment.write.format("csv").option("header", "true").save("/user/hangrui/conversation/commentmsg")
