@@ -2,6 +2,7 @@ from pyspark import SparkConf, SparkContext
 import json
 import pandas
 import re
+import langdetect
 import io
 from collections import namedtuple, Counter
 from pyspark.sql import SparkSession
@@ -208,6 +209,15 @@ def tokenfunc_frequency(msg):
     return res
 
 
+def countTokens(commenttokens, issuetokens):
+    tokendict = dict()
+    for tokens in commenttokens:
+        tokens = tokens[2:-2].split()
+
+
+
+
+
 if __name__ == "__main__":
 
     emoji_entries = emoji_entries_construction()
@@ -280,6 +290,8 @@ if __name__ == "__main__":
     issuetokens = list(issue.select("issuetokens").toPandas()['issuetokens'])
     print(commenttokens)
     print(issuetokens)
+
+    
     for token in issuetokens:
         token = token[2:-2].split(",")
         for t in token:
@@ -288,7 +300,7 @@ if __name__ == "__main__":
     
     buildG(commenttokens, all_emoji_regex, G)
     buildG(issuetokens,all_emoji_regex, G)
-    pickle.dump(G, open("token_graph_year.pck", "wb"))
+    # pickle.dump(G, open("token_graph_year.pck", "wb"))
     print(G.nodes)
     
     # issue.write.format("csv").option("header", "true").save("/user/hangrui/conversation/issuemsg")

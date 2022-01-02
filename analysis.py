@@ -198,7 +198,8 @@ def tokenfunc_frequency(msg):
 
     return res
 
-
+import langdetect
+from langdetect import detect
 if __name__ == "__main__":
 
     emoji_entries = emoji_entries_construction()
@@ -212,6 +213,8 @@ if __name__ == "__main__":
     
 
     msg = "I like 😄"
+    print(detect(msg))
+    
     tokenfunc(msg)
     print(tokenfunc(msg))
     # issue.write.format("csv").option("header", "true").save("/user/hangrui/conversation/issuemsg")
