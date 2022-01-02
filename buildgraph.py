@@ -191,6 +191,21 @@ def buildG(tokenslist, regex, G):
                 G.add_edge(w,token)
 
 
+def tokenfunc_frequency(msg):
+    tokens = re.findall(all_emoji_regex, msg)
+    # print(tokens)
+    freqdict = dict()
+    for t in tokens:
+        if t not in freqdict:
+            freqdict[t] = 0
+        freqdict[t] + 1
+    
+    res = []
+    for key, val in freqdict.items():
+        res.append((key, val))
+
+    return res
+
 
 if __name__ == "__main__":
 
@@ -245,6 +260,8 @@ if __name__ == "__main__":
         tokens = re.findall(all_emoji_regex, msg)
         print(tokens)
         return tokens
+
+    
 
     tokenudf = func.udf(tokenfunc)
     

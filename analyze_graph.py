@@ -1,6 +1,6 @@
 import pickle
 
-G = pickle.load(open("token_graph.pck","rb"))
+G = pickle.load(open("token_graph_day1.pck","rb"))
 
 print('the nodes of G')
 print(list(G.nodes))
