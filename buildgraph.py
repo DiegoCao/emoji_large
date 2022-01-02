@@ -258,6 +258,7 @@ if __name__ == "__main__":
 
     def tokenfunc(msg):
         tokens = re.findall(all_emoji_regex, msg)
+        print(msg)
         print(tokens)
         return tokens
 
@@ -280,7 +281,8 @@ if __name__ == "__main__":
     
     buildG(commenttokens, all_emoji_regex, G)
     buildG(issuetokens,all_emoji_regex, G)
-    pickle.dump(G, open("token_graph_day1.pck", "wb"))
+    # pickle.dump(G, open("token_graph_day1.pck", "wb"))
+    print(G.nodes)
     
     # issue.write.format("csv").option("header", "true").save("/user/hangrui/conversation/issuemsg")
     # comment.write.format("csv").option("header", "true").save("/user/hangrui/conversation/commentmsg")
