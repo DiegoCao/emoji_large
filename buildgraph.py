@@ -176,19 +176,20 @@ def buildG(tokenslist, regex, G):
     """
     
     for tokens in tokenslist:
+        tokens = tokens[2:-2].split()
         for idx, token in enumerate(tokens):
-            # if is_emoji(token):
-            window = tokens[max(0, idx-WINSIZE):min(len(tokens)-1,idx+WINSIZE)]
-            idx = 0
-            if token not in G.nodes():
-                G.add_node(token)
-            for w in window:
-                if (idx == WINSIZE):
-                    continue
-                idx += 1
-                if w not in G.nodes():
-                    G.add_node(w)
-                G.add_edge(w,token)
+            if is_emoji(token):
+                window = tokens[max(0, idx-WINSIZE):min(len(tokens)-1,idx+WINSIZE)]
+                idx = 0
+                if token not in G.nodes():
+                    G.add_node(token)
+                for w in window:
+                    if (idx == WINSIZE):
+                        continue
+                    idx += 1
+                    if w not in G.nodes():
+                        G.add_node(w)
+                    G.add_edge(w,token)
 
 
 def tokenfunc_frequency(msg):
@@ -220,8 +221,8 @@ if __name__ == "__main__":
     raw_root = "/user/hangrui/"
     # df_old = spark.read.parquet("/user/hangrui/2018_parquet_v3.parquet")
     # df = spark.read.parquet("/user/hangrui/2018_parquet_v3.parquet")
-    df_old = spark.read.parquet("/user/hangrui/2018_day_new.parquet")
-    df = spark.read.parquet("/user/hangrui/2018_day_new.parquet")
+    df_old = spark.read.parquet("/user/hangrui/2018_parquet_v3.parquet")
+    df = spark.read.parquet("/user/hangrui/2018_parquet_v3.parquet")
     print('the df head is ', df.head())
     print('the original number of rows: ', df.count())
 
@@ -287,7 +288,7 @@ if __name__ == "__main__":
     
     buildG(commenttokens, all_emoji_regex, G)
     buildG(issuetokens,all_emoji_regex, G)
-    # pickle.dump(G, open("token_graph_day1.pck", "wb"))
+    pickle.dump(G, open("token_graph_year.pck", "wb"))
     print(G.nodes)
     
     # issue.write.format("csv").option("header", "true").save("/user/hangrui/conversation/issuemsg")
