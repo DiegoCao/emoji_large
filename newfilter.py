@@ -201,9 +201,9 @@ def extract_emoji_hashtag(emoji_json, regex):
     dic['public'] = emoji_json['public']
     dic['rid'] = emoji_json['repo']['id']
     dic['created_time'] = emoji_json["created_at"]
-    dic['commentid'] = null
-    dic['commentissueid'] = null
-    dic['issueid'] = null
+    dic['commentid'] = None
+    dic['commentissueid'] = None
+    dic['issueid'] = None
     dtype = emoji_json['type']
     
     msg = ""
@@ -323,7 +323,7 @@ def testsmall():
     text = files.map(lambda line: extract_emoji_hashtag(line, regex))
     df = text.toDF()
     print(df.head())
-    df.write.save('2018_day.parquet') 
+    df.write.save('2018_day_new.parquet') 
     print('sucessfully saved')
 
     sc.stop()
