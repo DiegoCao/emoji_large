@@ -278,6 +278,7 @@ if __name__ == "__main__":
     commenttokens = list(comment.select('commenttokens').toPandas()['commenttokens'])
     issuetokens = list(issue.select("issuetokens").toPandas()['issuetokens'])
     print(commenttokens)
+    print(issuetokens)
     G = nx.Graph()
     
     buildG(commenttokens, all_emoji_regex, G)
