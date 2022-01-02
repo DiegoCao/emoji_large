@@ -201,7 +201,9 @@ def extract_emoji_hashtag(emoji_json, regex):
     dic['public'] = emoji_json['public']
     dic['rid'] = emoji_json['repo']['id']
     dic['created_time'] = emoji_json["created_at"]
-    
+    dic['commentid'] = null
+    dic['commentissueid'] = null
+    dic['issueid'] = null
     dtype = emoji_json['type']
     
     msg = ""
