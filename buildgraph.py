@@ -205,8 +205,8 @@ if __name__ == "__main__":
     raw_root = "/user/hangrui/"
     # df_old = spark.read.parquet("/user/hangrui/2018_parquet_v3.parquet")
     # df = spark.read.parquet("/user/hangrui/2018_parquet_v3.parquet")
-    df_old = spark.read.parquet("/user/hangrui/2018_day.parquet")
-    df = spark.read.parquet("/user/hangrui/2018_day.parquet")
+    df_old = spark.read.parquet("/user/hangrui/2018_day_new.parquet")
+    df = spark.read.parquet("/user/hangrui/2018_day_new.parquet")
     print('the df head is ', df.head())
     print('the original number of rows: ', df.count())
 
