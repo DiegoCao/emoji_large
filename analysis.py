@@ -2,6 +2,8 @@ import re
 import pickle
 import networkx as nx
 import io
+from collections import namedtuple, Counter
+
 def get_ranges(nums):
     """Reduce a list of integers to tuples of local maximums and minimums.
 
@@ -205,7 +207,6 @@ if __name__ == "__main__":
 
     def tokenfunc(msg):
         tokens = re.findall(all_emoji_regex, msg)
-        print(tokens)
         return tokens
 
     
