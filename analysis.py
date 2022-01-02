@@ -212,7 +212,7 @@ if __name__ == "__main__":
 
     
 
-    msg = "I like it very much 😄"
+    msg = "真的😄"
     print(detect(msg))
     
     tokenfunc(msg)
