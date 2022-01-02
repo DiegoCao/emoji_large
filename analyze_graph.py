@@ -1,6 +1,6 @@
 import pickle
 
-G = pickle.load(open("token_graph.pck","rb"))
+G = pickle.load(open("token_graph_day.pck","rb"))
 print('the information of graph G is: ', )
 
 
