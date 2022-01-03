@@ -298,20 +298,21 @@ if __name__ == "__main__":
         token = token[2:-2].split(",")
         for t in token:
             print(t)
-
-            if t not in emojitokencnt:
-                emojitokencnt[t] = 0
-            emojitokencnt[t] +=1 
+            if is_emoji(t):
+                if t not in emojitokencnt:
+                    emojitokencnt[t] = 0
+                emojitokencnt[t] +=1 
     
     for token in commenttokens:
         print(token)
         token = token[2:-2].split(",")
         for t in token:
             print(t)
-            # if is_emoji(t):
-            if t not in emojitokencnt:
-                emojitokencnt[t] = 0
-            emojitokencnt[t] += 1 
+            if is_emoji(t):
+                if t not in emojitokencnt:
+                    emojitokencnt[t] = 0
+                emojitokencnt[t] += 1 
+    print(' the emoji token frequency dict is :', emojitokencnt)
     print(emojitokencnt)
     pickle.dump(emojitokencnt, open("emoji_freq_day.pck", "wb"))
     G = nx.Graph()
