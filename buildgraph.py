@@ -295,7 +295,7 @@ if __name__ == "__main__":
     emojitokencnt = dict()
     for token in issuetokens:
         print(token)
-        token = token[2:-2].split(",")
+        # token = token[2:-2].split(",")
         for t in token:
             print(t)
             if is_emoji(t):
@@ -305,7 +305,8 @@ if __name__ == "__main__":
     
     for token in commenttokens:
         print(token)
-        token = token[2:-2].split(",")
+        print(type(token))
+        # token = token[2:-2].split(",")
         for t in token:
             print(t)
             if is_emoji(t):
