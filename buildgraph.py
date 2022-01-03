@@ -294,6 +294,7 @@ if __name__ == "__main__":
     
     emojitokencnt = dict()
     for token in issuetokens:
+        print(token)
         token = token[2:-2].split(",")
         for t in token:
             print(t)
@@ -303,6 +304,7 @@ if __name__ == "__main__":
                 emojitokencnt[t] +=1 
     
     for token in commenttokens:
+        print(token)
         token = token[2:-2].split(",")
         for t in token:
             print(t)
@@ -310,17 +312,17 @@ if __name__ == "__main__":
                 if t not in emojitokencnt:
                     emojitokencnt[t] = 0
                 emojitokencnt[t] += 1 
-
+    print(emojitokencnt)
     pickle.dump(emojitokencnt, open("emoji_freq_day.pck", "wb"))
     G = nx.Graph()
     
     buildG(commenttokens, all_emoji_regex, G)
     buildG(issuetokens,all_emoji_regex, G)
-    pickle.dump(G, open("token_graph_year_new.pck", "wb"))
+    # pickle.dump(G, open("token_graph_.pck", "wb"))
     print(G.nodes)
     
-    issue.write.format("csv").option("header", "true").save("/user/hangrui/conversation/issuemsg")
-    comment.write.format("csv").option("header", "true").save("/user/hangrui/conversation/commentmsg")
+    # issue.write.format("csv").option("header", "true").save("/user/hangrui/conversation/issuemsg")
+    # comment.write.format("csv").option("header", "true").save("/user/hangrui/conversation/commentmsg")
 
 
 
