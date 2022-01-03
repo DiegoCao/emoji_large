@@ -177,7 +177,7 @@ def buildG(tokenslist, regex, G):
     """
     
     for tokens in tokenslist:
-        tokens = tokens[2:-2].split()
+        tokens = tokens[2:-2].split(",")
         for idx, token in enumerate(tokens):
             if is_emoji(token):
                 window = tokens[max(0, idx-WINSIZE):min(len(tokens)-1,idx+WINSIZE)]
@@ -231,8 +231,8 @@ if __name__ == "__main__":
     raw_root = "/user/hangrui/"
     # df_old = spark.read.parquet("/user/hangrui/2018_parquet_v3.parquet")
     # df = spark.read.parquet("/user/hangrui/2018_parquet_v3.parquet")
-    df_old = spark.read.parquet("/user/hangrui/2018_day_v3.parquet")
-    df = spark.read.parquet("/user/hangrui/2018_day_v3.parquet")
+    df_old = spark.read.parquet("/user/hangrui/2018_day_new.parquet")
+    df = spark.read.parquet("/user/hangrui/2018_day_new.parquet")
     print('the df head is ', df.head())
     print('the original number of rows: ', df.count())
 
