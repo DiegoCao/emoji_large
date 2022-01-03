@@ -198,25 +198,33 @@ def tokenfunc_frequency(msg):
 
     return res
 
+def plotFreq():
+    emoji_freq = None
+    with open("emoji_freq.pck", "rb") as fp:
+        emoji_freq = pickle.load(fp)
+    
+    print(emoji_freq)
+
+
 import langdetect
 from langdetect import detect
 if __name__ == "__main__":
 
-    emoji_entries = emoji_entries_construction()
-    all_emoji_regex, emoji_dict = construct_regex(emoji_entries)
+    # emoji_entries = emoji_entries_construction()
+    # all_emoji_regex, emoji_dict = construct_regex(emoji_entries)
 
-
-    def tokenfunc(msg):
-        tokens = re.findall(all_emoji_regex, msg)
-        return tokens
+    plotFreq()
+    # def tokenfunc(msg):
+    #     tokens = re.findall(all_emoji_regex, msg)
+    #     return tokens
 
     
 
-    msg = "真的😄"
-    print(detect(msg))
+    # msg = "真的😄"
+    # print(detect(msg))
     
-    tokenfunc(msg)
-    print(tokenfunc(msg))
+    # tokenfunc(msg)
+    # print(tokenfunc(msg))
     # issue.write.format("csv").option("header", "true").save("/user/hangrui/conversation/issuemsg")
     # comment.write.format("csv").option("header", "true").save("/user/hangrui/conversation/commentmsg")
 
