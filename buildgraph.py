@@ -177,7 +177,8 @@ def buildG(tokenslist, regex, G):
     """
     
     for tokens in tokenslist:
-        tokens = tokens[2:-2].split(",")
+        msg = tokens[1:-1]
+        tokens = re.findall(regex, msg)
         for idx, token in enumerate(tokens):
             if is_emoji(token):
                 window = tokens[max(0, idx-WINSIZE):min(len(tokens)-1,idx+WINSIZE)]
@@ -318,7 +319,7 @@ if __name__ == "__main__":
                 emojitokencnt[t] += 1 
     print(' the emoji token frequency dict is :', emojitokencnt)
     print(emojitokencnt)
-    pickle.dump(emojitokencnt, open("emoji_freq_day.pck", "wb"))
+    # pickle.dump(emojitokencnt, open("emoji_freq_year.pck", "wb"))
     G = nx.Graph()
     
     buildG(commenttokens, all_emoji_regex, G)
