@@ -277,13 +277,13 @@ if __name__ == "__main__":
 
     tokenizer = Tokenizer(inputCol="msg", outputCol="tokens")
     comment = tokenizer.transform(comment)
+    comment.show()
 
-
+    tokenizer = Tokenizer(inputCol="msg", outputCol="tokens")
     issue = tokenizer.transform(issue)
     issue = issue.transform(issue)
     # 
     # comment.withColumnRenamed("getMsg2(commentmsglist)","msg")
-    comment.show()
     
 
     def tokenfunc(msg):
