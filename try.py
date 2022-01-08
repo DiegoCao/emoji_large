@@ -3,6 +3,7 @@ from pyspark.ml.feature import HashingTF, IDF, Tokenizer
 
 from pyspark.context import SparkContext
 from pyspark.sql.session import SparkSession
+
 spark = SparkSession.builder.appName('SparkByExamples.com').getOrCreate()
 # rdd = spark.sparkContext.parallelize(data)
 
@@ -14,6 +15,7 @@ sentenceData = spark.createDataFrame([
 
 tokenizer = Tokenizer(inputCol="sentence", outputCol="words")
 wordsData = tokenizer.transform(sentenceData)
+wordsData.show()
 
 hashingTF = HashingTF(inputCol="words", outputCol="rawFeatures", numFeatures=20)
 featurizedData = hashingTF.transform(wordsData)
