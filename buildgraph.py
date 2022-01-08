@@ -4,17 +4,20 @@ import pandas
 import re
 import langdetect
 import io
+
+
 from collections import namedtuple, Counter
 from pyspark.sql import SparkSession
 from pyspark.sql.functions import udf, countDistinct
 from pyspark.sql.types import IntegerType, FloatType
+
 import pyspark.sql.functions as func
 import pickle
 import networkx as nx
 
 from pyspark.ml.feature import HashingTF, IDF, Tokenizer
-
 from nltk.tokenize import word_tokenize
+
 # import enchant
 
 def get_ranges(nums):
@@ -271,11 +274,11 @@ if __name__ == "__main__":
     myudf2 = func.udf(getMsg2)
     myudf3 = func.udf(getid)
     comment = comment.select("commentid", myudf2("commentmsglist").alias("msg"))
-
-    tokenizer = Tokenizer(inputCol="msg", outputCol="tokens")
     
+    tokenizer = Tokenizer(inputCol="msg", outputCol="tokens")
     comment = tokenizer.transform(comment)
     issue = issue.transform(issue)
+    # 
     # comment.withColumnRenamed("getMsg2(commentmsglist)","msg")
     comment.show()
     
