@@ -275,6 +275,8 @@ if __name__ == "__main__":
     myudf3 = func.udf(getid)
 
     comment = comment.select("commentid", myudf2("commentmsglist").alias("msg"))
+    comment.show()
+
     
     tokenizer = Tokenizer(inputCol="msg", outputCol="tokens")
     comment = tokenizer.transform(comment)
