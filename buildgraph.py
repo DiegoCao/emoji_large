@@ -225,9 +225,6 @@ def countTokens(commenttokens, issuetokens):
         tokens = tokens[2:-2].split()
 
 
-
-
-
 if __name__ == "__main__":
 
     emoji_entries = emoji_entries_construction()
@@ -277,9 +274,11 @@ if __name__ == "__main__":
     comment = comment.select("commentid", myudf2("commentmsglist").alias("msg"))
     comment.show()
 
-    
+
     tokenizer = Tokenizer(inputCol="msg", outputCol="tokens")
     comment = tokenizer.transform(comment)
+
+    issue = tokenizer.transform(issue)
     issue = issue.transform(issue)
     # 
     # comment.withColumnRenamed("getMsg2(commentmsglist)","msg")
