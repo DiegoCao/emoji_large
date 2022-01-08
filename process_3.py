@@ -8,6 +8,7 @@ from pyspark.sql import SparkSession
 from pyspark.sql.functions import udf, countDistinct
 from pyspark.sql.types import IntegerType, FloatType
 
+
 def udffilter(x):
     
     maxval = -1
