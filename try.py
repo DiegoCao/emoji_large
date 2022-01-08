@@ -1,4 +1,5 @@
 from pyspark.ml.feature import HashingTF, IDF, Tokenizer
+import spark
 
 sentenceData = spark.createDataFrame([
     (0.0, "Hi I heard about Spark"),
