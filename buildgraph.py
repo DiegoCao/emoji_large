@@ -278,6 +278,7 @@ if __name__ == "__main__":
     tokenizer = Tokenizer(inputCol="msg", outputCol="tokens")
     comment = tokenizer.transform(comment)
 
+
     issue = tokenizer.transform(issue)
     issue = issue.transform(issue)
     # 
@@ -295,20 +296,21 @@ if __name__ == "__main__":
 
     tokenudf = func.udf(tokenfunc)
     
-    issue = issue.select("issueid",tokenudf("msg").alias("issuetokens"))
-    # issue.withColumnRenamed("issueid","issuetokens")
-    comment = comment.select("commentid", tokenudf("msg").alias("commenttokens"))
+    # issue = issue.select("issueid",tokenudf("msg").alias("issuetokens"))
+    # # issue.withColumnRenamed("issueid","issuetokens")
+    # comment = comment.select("commentid", tokenudf("msg").alias("commenttokens"))
     # comment.withColumnRenamed("commentid","commenttokens")
 
-    comment.show()
-    issue.show()
+    # comment.show()
+    # issue.show()
 
     # commenttokens = comment["commenttokens"]   
-    commenttokens = list(comment.select('commenttokens').toPandas()['commenttokens'])
-    issuetokens = list(issue.select("issuetokens").toPandas()['issuetokens'])
+    # commenttokens = list(comment.select('commenttokens').toPandas()['commenttokens'])
+    # issuetokens = list(issue.select("issuetokens").toPandas()['issuetokens'])
     # print(commenttokens)
     # print(issuetokens)
-
+    issuetokens = issue["tokens"]
+    commenttokens = comment["tokens"]
     
     emojitokencnt = dict()
     for token in issuetokens:
