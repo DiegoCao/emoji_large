@@ -8,7 +8,7 @@ spark = SparkSession.builder.appName('SparkByExamples.com').getOrCreate()
 # rdd = spark.sparkContext.parallelize(data)
 
 sentenceData = spark.createDataFrame([
-    (0.0, "Hi I heard about Spark"),
+    (0.0, "😊 Hi I heard about Spark"),
     (0.0, "I wish Java could use case classes"),
     (1.0, "Logistic regression models are neat")
 ], ["label", "sentence"])

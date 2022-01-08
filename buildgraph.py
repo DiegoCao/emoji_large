@@ -273,6 +273,7 @@ if __name__ == "__main__":
     issue.show()
     myudf2 = func.udf(getMsg2)
     myudf3 = func.udf(getid)
+
     comment = comment.select("commentid", myudf2("commentmsglist").alias("msg"))
     
     tokenizer = Tokenizer(inputCol="msg", outputCol="tokens")
