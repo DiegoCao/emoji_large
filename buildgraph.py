@@ -15,7 +15,7 @@ import networkx as nx
 from pyspark.ml.feature import HashingTF, IDF, Tokenizer
 
 from nltk.tokenize import word_tokenize
-import enchant
+# import enchant
 
 def get_ranges(nums):
     """Reduce a list of integers to tuples of local maximums and minimums.
@@ -278,6 +278,7 @@ if __name__ == "__main__":
     issue = issue.transform(issue)
     # comment.withColumnRenamed("getMsg2(commentmsglist)","msg")
     comment.show()
+    
 
     def tokenfunc(msg):
         tokens = re.findall(all_emoji_regex, msg)
