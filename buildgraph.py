@@ -319,8 +319,8 @@ if __name__ == "__main__":
     issuetokens = list(issue.select("tokens").toPandas()['tokens'])
     # print(commenttokens)
     # print(issuetokens)
-    issuetokens = issue["tokens"]
-    commenttokens = comment["tokens"]
+    # issuetokens = issue["tokens"]
+    # commenttokens = comment["tokens"]
     
     emojitokencnt = dict()
     for token in issuetokens:
