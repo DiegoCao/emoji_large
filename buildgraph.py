@@ -7,6 +7,8 @@ import io
 
 
 from collections import namedtuple, Counter
+from langdetect import detect
+
 from pyspark.sql import SparkSession
 from pyspark.sql.functions import udf, countDistinct
 from pyspark.sql.types import IntegerType, FloatType
@@ -225,6 +227,13 @@ def countTokens(commenttokens, issuetokens):
         tokens = tokens[2:-2].split()
 
 
+def filterChinese(msg):
+    if detect(msg) == 'zh-cn' or detect(msg) == 'ja':
+        return False
+    return True
+
+
+
 if __name__ == "__main__":
 
     emoji_entries = emoji_entries_construction()
@@ -258,7 +267,6 @@ if __name__ == "__main__":
         return msgs[len(msgs)-1]
     def getMsg2(msgstruct):
         return msgstruct[len(msgstruct)-1]["msg"]
-
     def getid(msgstruct):
         return msgstruct[len(msgstruct)-1]["commentissueid"]
 
@@ -281,8 +289,8 @@ if __name__ == "__main__":
     comment.show()
 
     tokenizer = Tokenizer(inputCol="msg", outputCol="tokens")
-    issue.show()
     issue = tokenizer.transform(issue)
+    issue.show()
     # 
     # comment.withColumnRenamed("getMsg2(commentmsglist)","msg")
     
