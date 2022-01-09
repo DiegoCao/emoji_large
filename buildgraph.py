@@ -258,18 +258,19 @@ if __name__ == "__main__":
         return msgs[len(msgs)-1]
     def getMsg2(msgstruct):
         return msgstruct[len(msgstruct)-1]["msg"]
+
     def getid(msgstruct):
         return msgstruct[len(msgstruct)-1]["commentissueid"]
 
     myudf = func.udf(getMsg)
+    myudf2 = func.udf(getMsg2)
+    myudf3 = func.udf(getid)
+
 
     issue = issue.groupby("issueid").agg(func.collect_list("msg").alias("issuemsglist"))
     issue = issue.select("issueid", myudf("issuemsglist").alias("msg"))
-    # issue.withColumnRenamed("getMsg(issuemsglist)","msg")
-
     issue.show()
-    myudf2 = func.udf(getMsg2)
-    myudf3 = func.udf(getid)
+
 
     comment = comment.select("commentid", myudf2("commentmsglist").alias("msg"))
     comment.show()
@@ -280,8 +281,8 @@ if __name__ == "__main__":
     comment.show()
 
     tokenizer = Tokenizer(inputCol="msg", outputCol="tokens")
+    issue.show()
     issue = tokenizer.transform(issue)
-    issue = issue.transform(issue)
     # 
     # comment.withColumnRenamed("getMsg2(commentmsglist)","msg")
     
