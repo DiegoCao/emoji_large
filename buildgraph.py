@@ -306,21 +306,21 @@ if __name__ == "__main__":
 
     tokenudf = func.udf(tokenfunc)
     
-    # issue = issue.select("issueid",tokenudf("msg").alias("issuetokens"))
-    # # issue.withColumnRenamed("issueid","issuetokens")
-    # comment = comment.select("commentid", tokenudf("msg").alias("commenttokens"))
-    # comment.withColumnRenamed("commentid","commenttokens")
+    issue = issue.select("issueid",tokenudf("msg").alias("issuetokens"))
+    # issue.withColumnRenamed("issueid","issuetokens")
+    comment = comment.select("commentid", tokenudf("msg").alias("commenttokens"))
+    comment.withColumnRenamed("commentid","commenttokens")
 
     # comment.show()
     # issue.show()
 
     # commenttokens = comment["commenttokens"]   
-    commenttokens = list(comment.select('tokens').toPandas()['tokens'])
-    issuetokens = list(issue.select("tokens").toPandas()['tokens'])
+    commenttokens = list(comment.select('commenttokens').toPandas()['commenttokens'])
+    issuetokens = list(issue.select("issuetokens").toPandas()['issuetokens'])
     # print(commenttokens)
-    # print(issuetokens)
-    # issuetokens = issue["tokens"]
-    # commenttokens = comment["tokens"]
+    print(issuetokens)
+    issuetokens = issue["tokens"]
+    commenttokens = comment["tokens"]
     
     emojitokencnt = dict()
     for token in issuetokens:
@@ -350,6 +350,11 @@ if __name__ == "__main__":
                 if t not in emojitokencnt:
                     emojitokencnt[t] = 0
                 emojitokencnt[t] += 1 
+
+    UDK = 0
+
+
+                
     print(' the emoji token frequency dict is :', emojitokencnt)
 
 
