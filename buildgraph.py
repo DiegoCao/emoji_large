@@ -230,6 +230,7 @@ def countTokens(commenttokens, issuetokens):
 def filterChinese(msg):
     if detect(msg) == 'zh-cn' or detect(msg) == 'ja':
         return False
+    
     return True
 
 
@@ -314,8 +315,8 @@ if __name__ == "__main__":
     # issue.show()
 
     # commenttokens = comment["commenttokens"]   
-    # commenttokens = list(comment.select('commenttokens').toPandas()['commenttokens'])
-    # issuetokens = list(issue.select("issuetokens").toPandas()['issuetokens'])
+    commenttokens = list(comment.select('tokens').toPandas()['tokens'])
+    issuetokens = list(issue.select("tokens").toPandas()['tokens'])
     # print(commenttokens)
     # print(issuetokens)
     issuetokens = issue["tokens"]
@@ -346,6 +347,8 @@ if __name__ == "__main__":
                     emojitokencnt[t] = 0
                 emojitokencnt[t] += 1 
     print(' the emoji token frequency dict is :', emojitokencnt)
+
+
     print(emojitokencnt)
     # pickle.dump(emojitokencnt, open("emoji_freq_year.pck", "wb"))
     G = nx.Graph()
