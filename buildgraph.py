@@ -330,6 +330,7 @@ if __name__ == "__main__":
         token = re.findall(all_emoji_regex, msg)
         for t in token:
             print(t)
+            t = t.lower()
             if is_emoji(t):
                 if t not in emojitokencnt:
                     emojitokencnt[t] = 0
@@ -340,8 +341,10 @@ if __name__ == "__main__":
         print(type(token))
         msg = token[1:-1]
         token = re.findall(all_emoji_regex, msg)
+        
         for t in token:
             print(t)
+            t = t.lower()
             if is_emoji(t):
                 if t not in emojitokencnt:
                     emojitokencnt[t] = 0
