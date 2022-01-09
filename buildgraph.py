@@ -325,6 +325,7 @@ if __name__ == "__main__":
     emojitokencnt = dict()
     for token in issuetokens:
         print(token)
+        print(type(token))
         # token = token[1:-1].split(",")
         msg = token[1:-1]
         token = re.findall(all_emoji_regex, msg)
