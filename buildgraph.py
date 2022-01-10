@@ -285,13 +285,13 @@ if __name__ == "__main__":
     comment.show()
 
 
-    tokenizer = Tokenizer(inputCol="msg", outputCol="tokens")
-    comment = tokenizer.transform(comment)
-    comment.show()
+    # tokenizer = Tokenizer(inputCol="msg", outputCol="tokens")
+    # comment = tokenizer.transform(comment)
+    # comment.show()
 
-    tokenizer = Tokenizer(inputCol="msg", outputCol="tokens")
-    issue = tokenizer.transform(issue)
-    issue.show()
+    # tokenizer = Tokenizer(inputCol="msg", outputCol="tokens")
+    # issue = tokenizer.transform(issue)
+    # issue.show()
     # 
     # comment.withColumnRenamed("getMsg2(commentmsglist)","msg")
     
@@ -319,8 +319,8 @@ if __name__ == "__main__":
     issuetokens = list(issue.select("issuetokens").toPandas()['issuetokens'])
     # print(commenttokens)
     print(issuetokens)
-    issuetokens = issue["tokens"]
-    commenttokens = comment["tokens"]
+    # issuetokens = issue["tokens"]
+    # commenttokens = comment["tokens"]
     
     emojitokencnt = dict()
     for token in issuetokens:
