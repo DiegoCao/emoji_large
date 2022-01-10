@@ -43,6 +43,12 @@ def get_ranges(nums):
         lows.append(highs[-1])
     return [(l, h) for l, h in zip(lows, highs)]
 from emoji import UNICODE_EMOJI, EMOJI_UNICODE
+
+def filterChinese(msg):
+    if detect(msg) == 'zh-cn' or detect(msg) == 'ja':
+        return False
+    return True
+
 def is_emoji(s):
     if s in UNICODE_EMOJI['en']:
         return True
@@ -182,13 +188,15 @@ from pyspark.sql import Window
 import operator
 
 WINSIZE = 2
-def buildG(tokenslist, regex, G):
+def buildG(tokenslist, regex, G, emojicntdict):
     """
         Only consider the one within emoji usage
     """
     
     for tokens in tokenslist:
         msg = tokens[1:-1]
+        if filterChinese(msg) == False:
+            continue
         tokens = re.findall(regex, msg)
         for idx, token in enumerate(tokens):
             if is_emoji(token):
@@ -200,9 +208,13 @@ def buildG(tokenslist, regex, G):
                     if (idx == WINSIZE):
                         continue
                     idx += 1
+                    
                     if w not in G.nodes():
                         G.add_node(w)
-                    G.add_edge(w,token)
+                    if G.has_edge(w, token):
+                        G[w][token]['weight'] += 1
+                    else:
+                        G.add_edge(w,token)
 
 
 def tokenfunc_frequency(msg):
@@ -227,11 +239,6 @@ def countTokens(commenttokens, issuetokens):
         tokens = tokens[2:-2].split()
 
 
-def filterChinese(msg):
-    if detect(msg) == 'zh-cn' or detect(msg) == 'ja':
-        return False
-    
-    return True
 
 
 
