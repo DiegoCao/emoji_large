@@ -369,8 +369,8 @@ if __name__ == "__main__":
     # pickle.dump(emojitokencnt, open("emoji_freq_year.pck", "wb"))
     G = nx.Graph()
     
-    buildG(commenttokens, all_emoji_regex, G)
-    buildG(issuetokens,all_emoji_regex, G)
+    buildG(commenttokens, all_emoji_regex, G, emojitokencnt)
+    buildG(issuetokens,all_emoji_regex, G, emojitokencnt)
     # pickle.dump(G, open("token_graph_.pck", "wb"))
     print(G.nodes)
     
