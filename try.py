@@ -1,5 +1,6 @@
 # from pyspark.ml.feature import HashingTF, IDF, Tokenizer
 # from pyspark.context import SparkContext
+from langdetect import detect
 # from pyspark.sql.session import SparkSession
 import networkx as nx
 # spark = SparkSession.builder.appName('SparkByExamples.com').getOrCreate()
@@ -30,3 +31,17 @@ X = [[0,0,0], [3,2,2], [1,3,3], [0,0,1], [0,1,0]]
 from sklearn.neighbors import kneighbors_graph
 A = kneighbors_graph(X, 3, mode='connectivity', include_self=False)
 print(A.toarray())
+
+
+def filterChinese(msg):
+    language = None
+    try:
+        language = detect(msg)
+    except:
+        language = "error"
+        return True 
+    if language == 'zh-cn' or language == 'ja' or language == 'ko':
+            return False
+    return True
+
+print(filterChinese("那怎么办"))

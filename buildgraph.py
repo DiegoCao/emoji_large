@@ -51,8 +51,7 @@ def filterChinese(msg):
     except:
         language = "error"
         return True 
-
-    if language == 'zh-cn' or language == 'ja':
+    if language == 'zh-cn' or language == 'ja' or language == 'ko':
             return False
     return True
 
@@ -215,7 +214,8 @@ def buildG(tokenslist, regex, G, emojicntdict):
                     if (idx == WINSIZE):
                         continue
                     idx += 1
-                    
+                    if filterChinese(w) == False:
+                        continue
                     if w not in G.nodes():
                         G.add_node(w)
                     if G.has_edge(w, token):
