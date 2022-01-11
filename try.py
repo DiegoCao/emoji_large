@@ -1,6 +1,7 @@
 # from pyspark.ml.feature import HashingTF, IDF, Tokenizer
 # from pyspark.context import SparkContext
 from langdetect import detect
+from langdetect.detector_factory import detect_langs
 # from pyspark.sql.session import SparkSession
 import networkx as nx
 # spark = SparkSession.builder.appName('SparkByExamples.com').getOrCreate()
@@ -40,8 +41,10 @@ def filterChinese(msg):
     except:
         language = "error"
         return True 
+    print(detect_langs(msg))
+
     if language == 'zh-cn' or language == 'ja' or language == 'ko':
             return False
     return True
 
-print(filterChinese("win10专业版注册表没有HKEY_LOCAL_MACHINE这项"))
+print(filterChinese("detect(没有测试iphone的机)"))

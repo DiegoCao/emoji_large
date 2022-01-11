@@ -51,7 +51,7 @@ def filterChinese(msg):
     except:
         language = "error"
         return True 
-    if language == 'zh-cn' or language == 'ja' or language == 'ko':
+    if language in ['zh-cn','ja','ko','fr','vi']:
             return False
     return True
 
