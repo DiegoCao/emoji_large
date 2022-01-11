@@ -215,7 +215,7 @@ def buildG(tokenslist, regex, G, emojicntdict):
                         # data = G.get_edge_data()
                         G[w][token]["weight"] += 1
                     else:
-                        G.add_edge(w,token)
+                        G.add_edge(w,token, weight = 1)
 
 
 def tokenfunc_frequency(msg):

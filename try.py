@@ -1,28 +1,34 @@
-from pyspark.ml.feature import HashingTF, IDF, Tokenizer
+# from pyspark.ml.feature import HashingTF, IDF, Tokenizer
 
 
-from pyspark.context import SparkContext
-from pyspark.sql.session import SparkSession
+# from pyspark.context import SparkContext
+# from pyspark.sql.session import SparkSession
 
-spark = SparkSession.builder.appName('SparkByExamples.com').getOrCreate()
-# rdd = spark.sparkContext.parallelize(data)
+import networkx as nx
 
-sentenceData = spark.createDataFrame([
-    (0.0, "😊 Hi I heard about Spark"),
-    (0.0, "I wish Java could use case classes"),
-    (1.0, "Logistic regression models are neat")
-], ["label", "sentence"])
+# spark = SparkSession.builder.appName('SparkByExamples.com').getOrCreate()
+# # rdd = spark.sparkContext.parallelize(data)
 
-tokenizer = Tokenizer(inputCol="sentence", outputCol="words")
-wordsData = tokenizer.transform(sentenceData)
-wordsData.show()
+# sentenceData = spark.createDataFrame([
+#     (0.0, "😊 Hi I heard about Spark"),
+#     (0.0, "I wish Java could use case classes"),
+#     (1.0, "Logistic regression models are neat")
+# ], ["label", "sentence"])
 
-hashingTF = HashingTF(inputCol="words", outputCol="rawFeatures", numFeatures=20)
-featurizedData = hashingTF.transform(wordsData)
-# alternatively, CountVectorizer can also be used to get term frequency vectors
+# tokenizer = Tokenizer(inputCol="sentence", outputCol="words")
+# wordsData = tokenizer.transform(sentenceData)
+# wordsData.show()
 
-idf = IDF(inputCol="rawFeatures", outputCol="features")
-idfModel = idf.fit(featurizedData)
-rescaledData = idfModel.transform(featurizedData)
+# hashingTF = HashingTF(inputCol="words", outputCol="rawFeatures", numFeatures=20)
+# featurizedData = hashingTF.transform(wordsData)
+# # alternatively, CountVectorizer can also be used to get term frequency vectors
 
-rescaledData.select("label", "features").show()
+# idf = IDF(inputCol="rawFeatures", outputCol="features")
+# idfModel = idf.fit(featurizedData)
+# rescaledData = idfModel.transform(featurizedData)
+
+# rescaledData.select("label", "features").show()
+
+g = nx.Graph()
+g.add_edge("A", "B", weight = 1)
+print(g['A']['B']['weight'])
