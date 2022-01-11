@@ -45,8 +45,15 @@ def get_ranges(nums):
 from emoji import UNICODE_EMOJI, EMOJI_UNICODE
 
 def filterChinese(msg):
-    if detect(msg) == 'zh-cn' or detect(msg) == 'ja':
-        return False
+    language = None
+    try:
+        language = detect(msg)
+    except:
+        language = "error"
+        return True 
+
+    if language == 'zh-cn' or language == 'ja':
+            return False
     return True
 
 def is_emoji(s):
