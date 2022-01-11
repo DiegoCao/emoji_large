@@ -44,4 +44,4 @@ def filterChinese(msg):
             return False
     return True
 
-print(filterChinese("那怎么办"))
+print(filterChinese("win10专业版注册表没有HKEY_LOCAL_MACHINE这项"))
