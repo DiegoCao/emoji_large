@@ -212,7 +212,8 @@ def buildG(tokenslist, regex, G, emojicntdict):
                     if w not in G.nodes():
                         G.add_node(w)
                     if G.has_edge(w, token):
-                        G[w][token]['weight'] += 1
+                        # data = G.get_edge_data()
+                        G[w][token]["weight"] += 1
                     else:
                         G.add_edge(w,token)
 
