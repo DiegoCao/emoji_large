@@ -261,10 +261,10 @@ if __name__ == "__main__":
     spark = SparkSession(sc)
     spark.sparkContext.setLogLevel('WARN')
     raw_root = "/user/hangrui/"
-    df_old = spark.read.parquet("/user/hangrui/2018_parquet_v3.parquet")
-    df = spark.read.parquet("/user/hangrui/2018_parquet_v3.parquet")
-    # df_old = spark.read.parquet("/user/hangrui/2018_day_new.parquet")
-    # df = spark.read.parquet("/user/hangrui/2018_day_new.parquet")
+    # df_old = spark.read.parquet("/user/hangrui/2018_parquet_v3.parquet")
+    # df = spark.read.parquet("/user/hangrui/2018_parquet_v3.parquet")
+    df_old = spark.read.parquet("/user/hangrui/2018_day_new.parquet")
+    df = spark.read.parquet("/user/hangrui/2018_day_new.parquet")
     print('the df head is ', df.head())
     print('the original number of rows: ', df.count())
 
@@ -379,7 +379,7 @@ if __name__ == "__main__":
     
     buildG(commenttokens, all_emoji_regex, G, emojitokencnt)
     buildG(issuetokens,all_emoji_regex, G, emojitokencnt)
-    pickle.dump(G, open("token_graph_year_v2.pck", "wb"))
+    pickle.dump(G, open("token_graph_day_v2.pck", "wb"))
     print(G.nodes)
     
     # issue.write.format("csv").option("header", "true").save("/user/hangrui/conversation/issuemsg")
