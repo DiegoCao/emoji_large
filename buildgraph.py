@@ -374,12 +374,12 @@ if __name__ == "__main__":
 
 
     print(emojitokencnt)
-    # pickle.dump(emojitokencnt, open("emoji_freq_year.pck", "wb"))
+    pickle.dump(emojitokencnt, open("emoji_freq_year.pck", "wb"))
     G = nx.Graph()
     
     buildG(commenttokens, all_emoji_regex, G, emojitokencnt)
     buildG(issuetokens,all_emoji_regex, G, emojitokencnt)
-    # pickle.dump(G, open("token_graph_.pck", "wb"))
+    pickle.dump(G, open("token_graph_year_v2.pck", "wb"))
     print(G.nodes)
     
     # issue.write.format("csv").option("header", "true").save("/user/hangrui/conversation/issuemsg")
