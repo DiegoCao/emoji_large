@@ -21,7 +21,8 @@ import networkx as nx
 
 from pyspark.ml.feature import HashingTF, IDF, Tokenizer
 from nltk.tokenize import word_tokenize
-
+import nltk
+nltk.download('stopwords')
 
 from nltk.corpus import stopwords
 STOPWORDS = set(stopwords.words['english'])
