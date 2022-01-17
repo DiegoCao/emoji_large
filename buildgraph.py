@@ -5,6 +5,8 @@ import re
 import langdetect
 import io
 
+import nltk
+from nltk.corpus import stopwords
 
 from collections import namedtuple, Counter
 from langdetect import detect
@@ -20,6 +22,9 @@ import networkx as nx
 from pyspark.ml.feature import HashingTF, IDF, Tokenizer
 from nltk.tokenize import word_tokenize
 
+
+from nltk.corpus import stopwords
+STOPWORDS = set(stopwords['english'])
 # import enchant
 
 def get_ranges(nums):
@@ -204,6 +209,7 @@ def buildG(tokenslist, regex, G, emojicntdict):
         if filterChinese(msg) == False:
             continue
         tokens = re.findall(regex, msg)
+        tokens = [t.lower() for t in tokens]
         for idx, token in enumerate(tokens):
             if is_emoji(token):
                 window = tokens[max(0, idx-WINSIZE):min(len(tokens)-1,idx+WINSIZE)]
@@ -214,7 +220,7 @@ def buildG(tokenslist, regex, G, emojicntdict):
                     if (idx == WINSIZE):
                         continue
                     idx += 1
-                    if filterChinese(w) == False:
+                    if filterChinese(w) == False or w in STOPWORDS:
                         continue
                     if w not in G.nodes():
                         G.add_node(w)
@@ -347,6 +353,7 @@ if __name__ == "__main__":
         for t in token:
             print(t)
             t = t.lower()
+            
             if is_emoji(t):
                 if t not in emojitokencnt:
                     emojitokencnt[t] = 0
@@ -384,6 +391,3 @@ if __name__ == "__main__":
     
     # issue.write.format("csv").option("header", "true").save("/user/hangrui/conversation/issuemsg")
     # comment.write.format("csv").option("header", "true").save("/user/hangrui/conversation/commentmsg")
-
-
-
