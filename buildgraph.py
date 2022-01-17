@@ -24,7 +24,7 @@ from nltk.tokenize import word_tokenize
 
 
 from nltk.corpus import stopwords
-STOPWORDS = set(stopwords['english'])
+STOPWORDS = set(stopwords.words['english'])
 # import enchant
 
 def get_ranges(nums):
