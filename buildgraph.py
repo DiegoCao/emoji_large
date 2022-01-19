@@ -340,14 +340,14 @@ if __name__ == "__main__":
     commenttokens = list(comment.select('commenttokens').toPandas()['commenttokens'])
     issuetokens = list(issue.select("issuetokens").toPandas()['issuetokens'])
     # print(commenttokens)
-    print(issuetokens)
+    # print(issuetokens)
     # issuetokens = issue["tokens"]
     # commenttokens = comment["tokens"]
     
     emojitokencnt = dict()
     for token in issuetokens:
-        print(token)
-        print(type(token))
+        # print(token)
+        # print(type(token))
         # token = token[1:-1].split(",")
         msg = token[1:-1]
         token = re.findall(all_emoji_regex, msg)
@@ -361,8 +361,8 @@ if __name__ == "__main__":
                 emojitokencnt[t] +=1 
     
     for token in commenttokens:
-        print(token)
-        print(type(token))
+        # print(token)
+        # print(type(token))
         msg = token[1:-1]
         token = re.findall(all_emoji_regex, msg)
         
@@ -383,6 +383,8 @@ if __name__ == "__main__":
 
     print(emojitokencnt)
     pickle.dump(emojitokencnt, open("emoji_freq_year.pck", "wb"))
+    pickle.dump(commenttokens, open("commenttokensyear.pck","wb"))
+    pickle.dump(issuetokens, open("issuetokensyear.pck", "wb"))
     G = nx.Graph()
     
     buildG(commenttokens, all_emoji_regex, G, emojitokencnt)
