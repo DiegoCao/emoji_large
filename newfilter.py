@@ -319,7 +319,7 @@ def testsmall():
 	
     raw_root = "/user/hangrui/data/"
     # output = "/user/hangrui/"    
-    files = sc.textFile(raw_root + "2018-01-*.json.gz")
+    files = sc.textFile(raw_root + "2018-01*.json.gz")
     text = files.map(lambda line: extract_emoji_hashtag(line, regex))
     df = text.toDF()
     print(df.head())
