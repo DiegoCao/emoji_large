@@ -374,13 +374,8 @@ if __name__ == "__main__":
                     emojitokencnt[t] = 0
                 emojitokencnt[t] += 1 
 
-    UDK = 0
-
-
-                
-    print(' the emoji token frequency dict is :', emojitokencnt)
-
-
+    UDK = 0     
+    print('the emoji token frequency dict is :', emojitokencnt)
     print(emojitokencnt)
     pickle.dump(emojitokencnt, open("emoji_freq_year.pck", "wb"))
     pickle.dump(commenttokens, open("commenttokensyear.pck","wb"))
@@ -391,6 +386,5 @@ if __name__ == "__main__":
     buildG(issuetokens,all_emoji_regex, G, emojitokencnt)
     pickle.dump(G, open("token_graph_year_v2.pck", "wb"))
     print(G.nodes)
-    
     # issue.write.format("csv").option("header", "true").save("/user/hangrui/conversation/issuemsg")
     # comment.write.format("csv").option("header", "true").save("/user/hangrui/conversation/commentmsg")
