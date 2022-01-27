@@ -22,6 +22,7 @@ import networkx as nx
 from pyspark.ml.feature import HashingTF, IDF, Tokenizer
 from nltk.tokenize import word_tokenize
 import nltk
+
 nltk.download('stopwords')
 
 from nltk.corpus import stopwords
@@ -333,22 +334,14 @@ if __name__ == "__main__":
     comment = comment.select("commentid", tokenudf("msg").alias("commenttokens"))
     comment.withColumnRenamed("commentid","commenttokens")
 
-    # comment.show()
-    # issue.show()
 
+    
     # commenttokens = comment["commenttokens"]   
     commenttokens = list(comment.select('commenttokens').toPandas()['commenttokens'])
     issuetokens = list(issue.select("issuetokens").toPandas()['issuetokens'])
-    # print(commenttokens)
-    # print(issuetokens)
-    # issuetokens = issue["tokens"]
-    # commenttokens = comment["tokens"]
     
     emojitokencnt = dict()
     for token in issuetokens:
-        # print(token)
-        # print(type(token))
-        # token = token[1:-1].split(",")
         msg = token[1:-1]
         token = re.findall(all_emoji_regex, msg)
         for t in token:
@@ -380,11 +373,15 @@ if __name__ == "__main__":
     pickle.dump(emojitokencnt, open("emoji_freq_year.pck", "wb"))
     pickle.dump(commenttokens, open("commenttokensyear.pck","wb"))
     pickle.dump(issuetokens, open("issuetokensyear.pck", "wb"))
+
     G = nx.Graph()
     
     buildG(commenttokens, all_emoji_regex, G, emojitokencnt)
     buildG(issuetokens,all_emoji_regex, G, emojitokencnt)
+
     pickle.dump(G, open("token_graph_year_v2.pck", "wb"))
     print(G.nodes)
+
+    # calculate the token pair frequency first, get the appearance, based on this calculate graph, 
     # issue.write.format("csv").option("header", "true").save("/user/hangrui/conversation/issuemsg")
     # comment.write.format("csv").option("header", "true").save("/user/hangrui/conversation/commentmsg")
