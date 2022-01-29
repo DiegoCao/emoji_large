@@ -44,6 +44,7 @@ from pyspark.sql import Window
 import operator
 
 
+
 if __name__ == "__main__":
     sc_name = "Conversation Issue"
     sc = SparkContext(conf=SparkConf().setAppName(sc_name))
@@ -123,7 +124,7 @@ if __name__ == "__main__":
     # dfci = dfci.select("commentissueid", sort_udf("templist").alias("comment_lis", "commentmsg"))
 
     # dfnew = dfci.join(dfi, dfi.issueid==dfci.commentissueid, 'outer')
-    # print(dfnew.head())
+    # par(dfnew.head())
     # dfnew.write.format("csv").option("header", "true").save("/user/hangrui/new/conversation_msg")
 
     # # ç

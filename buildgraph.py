@@ -255,6 +255,14 @@ def countTokens(commenttokens, issuetokens):
         tokens = tokens[2:-2].split()
 
 
+def getPair(lis):
+    pairs = []
+    for idx in range(0, len(lis) - 1):
+        pairs.append(lis[idx], lis[idx+1])
+    
+    
+    return pairs
+
 
 
 
@@ -308,21 +316,21 @@ if __name__ == "__main__":
     comment.show()
 
 
-    # tokenizer = Tokenizer(inputCol="msg", outputCol="tokens")
-    # comment = tokenizer.transform(comment)
-    # comment.show()
+    tokenizer = Tokenizer(inputCol="msg", outputCol="tokens")
+    comment = tokenizer.transform(comment)
+    comment.show()
 
-    # tokenizer = Tokenizer(inputCol="msg", outputCol="tokens")
-    # issue = tokenizer.transform(issue)
-    # issue.show()
-    # 
-    # comment.withColumnRenamed("getMsg2(commentmsglist)","msg")
+    tokenizer = Tokenizer(inputCol="msg", outputCol="tokens")
+    issue = tokenizer.transform(issue)
+    issue.show()
+    
+    comment.withColumnRenamed("getMsg2(commentmsglist)","msg")
     
 
     def tokenfunc(msg):
         tokens = re.findall(all_emoji_regex, msg)
-        print(msg)
-        print(tokens)
+        # print(msg)
+        # print(tokens)
         return tokens
 
     
@@ -336,52 +344,56 @@ if __name__ == "__main__":
 
 
     
-    # commenttokens = comment["commenttokens"]   
+    commenttokens = comment["commenttokens"]   
     commenttokens = list(comment.select('commenttokens').toPandas()['commenttokens'])
     issuetokens = list(issue.select("issuetokens").toPandas()['issuetokens'])
+    commenttokens.write.save("commentokens.parquet")
+    issuetokens.write.save("issuetokens.parquet")
     
-    emojitokencnt = dict()
-    for token in issuetokens:
-        msg = token[1:-1]
-        token = re.findall(all_emoji_regex, msg)
-        for t in token:
-            print(t)
-            t = t.lower()
+    # emojitokencnt = dict()
+    # for token in issuetokens:
+    #     msg = token[1:-1]
+    #     token = re.findall(all_emoji_regex, msg)
+    #     for t in token:
+    #         # print(t)
+    #         t = t.lower()
             
-            if is_emoji(t):
-                if t not in emojitokencnt:
-                    emojitokencnt[t] = 0
-                emojitokencnt[t] +=1 
+    #         if is_emoji(t):
+    #             if t not in emojitokencnt:
+    #                 emojitokencnt[t] = 0
+    #             emojitokencnt[t] +=1 
     
-    for token in commenttokens:
-        # print(token)
-        # print(type(token))
-        msg = token[1:-1]
-        token = re.findall(all_emoji_regex, msg)
+    # for token in commenttokens:
+    #     # print(token)
+    #     # print(type(token))
+    #     msg = token[1:-1]
+    #     token = re.findall(all_emoji_regex, msg)
         
-        for t in token:
-            print(t)
-            t = t.lower()
-            if is_emoji(t):
-                if t not in emojitokencnt:
-                    emojitokencnt[t] = 0
-                emojitokencnt[t] += 1 
+    #     for t in token:
+    #         # print(t)
+    #         t = t.lower()
+    #         if is_emoji(t):
+    #             if t not in emojitokencnt:
+    #                 emojitokencnt[t] = 0
+    #             emojitokencnt[t] += 1 
 
-    UDK = 0     
-    print('the emoji token frequency dict is :', emojitokencnt)
-    print(emojitokencnt)
-    pickle.dump(emojitokencnt, open("emoji_freq_year.pck", "wb"))
-    pickle.dump(commenttokens, open("commenttokensyear.pck","wb"))
-    pickle.dump(issuetokens, open("issuetokensyear.pck", "wb"))
+    # UDK = 0     
+    # print('the emoji token frequency dict is :', emojitokencnt)
+    # print(emojitokencnt)
+    # pickle.dump(emojitokencnt, open("emoji_freq_year.pck", "wb"))
+    # pickle.dump(commenttokens, open("commenttokensyear.pck","wb"))
+    # pickle.dump(issuetokens, open("issuetokensyear.pck", "wb"))
 
-    G = nx.Graph()
+    # G = nx.Graph()
     
-    buildG(commenttokens, all_emoji_regex, G, emojitokencnt)
-    buildG(issuetokens,all_emoji_regex, G, emojitokencnt)
+    # buildG(commenttokens, all_emoji_regex, G, emojitokencnt)
+    # buildG(issuetokens,all_emoji_regex, G, emojitokencnt)
 
-    pickle.dump(G, open("token_graph_year_v2.pck", "wb"))
-    print(G.nodes)
+    # pickle.dump(G, open("token_graph_year_v2.pck", "wb"))
+    # print(G.nodes)
 
     # calculate the token pair frequency first, get the appearance, based on this calculate graph, 
     # issue.write.format("csv").option("header", "true").save("/user/hangrui/conversation/issuemsg")
     # comment.write.format("csv").option("header", "true").save("/user/hangrui/conversation/commentmsg")
+
+
