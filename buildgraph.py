@@ -344,11 +344,11 @@ if __name__ == "__main__":
 
 
     
-    commenttokens = comment["commenttokens"]   
+    # commenttokens = comment["commenttokens"]   
     # commenttokens = list(comment.select('commenttokens').toPandas()['commenttokens'])
     # issuetokens = list(issue.select("issuetokens").toPandas()['issuetokens'])
-    commenttokens.write.save("commentokens.parquet")
-    issuetokens.write.save("issuetokens.parquet")
+    comment.write.save("commentokens.parquet")
+    issue.write.save("issuetokens.parquet")
     
     # emojitokencnt = dict()
     # for token in issuetokens:
