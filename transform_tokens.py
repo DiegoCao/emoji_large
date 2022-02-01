@@ -28,5 +28,26 @@ nltk.download('stopwords')
 from nltk.corpus import stopwords
 STOPWORDS = set(stopwords.words('english'))
 # import enchant
+from buildgraph import emoji_entries_construction, construct_regex
+
+def listtores(tokens):
+    ans = []
+    if len(tokens) == 1:
+        return []
+    else:
+        for i in range(len(tokens) - 1):
+            ans.append((tokens[0], tokens[i]))
 
 
+def getTokens():
+    emoji_entries = emoji_entries_construction()
+    all_emoji_regex, emoji_dict = construct_regex(emoji_entries)
+    sc_name = "Build Graph"
+    sc = SparkContext(conf=SparkConf().setAppName(sc_name))
+    sc.addFile("./emoji-test.txt")
+    sc.setLogLevel('ERROR')
+    spark = SparkSession(sc)
+    spark.sparkContext.setLogLevel('WARN')
+    raw_root = "/user/hangrui/"
+    comment = spark.read.parquet("/user/hangrui/commentokens.parquet")
+    issue = spark.read.parquet("/user/hangrui/issuetokens.parquet")

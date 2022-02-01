@@ -59,7 +59,8 @@ def filterChinese(msg):
         language = "error"
         return True 
     if language in ['zh-cn','ja','ko','fr','vi']:
-            return False
+        return False
+        
     return True
 
 def is_emoji(s):
@@ -328,6 +329,10 @@ if __name__ == "__main__":
     
 
     def tokenfunc(msg):
+        if filterChinese(msg) == False:
+            return []
+        
+    
         tokens = re.findall(all_emoji_regex, msg)
         # print(msg)
         # print(tokens)
@@ -344,11 +349,11 @@ if __name__ == "__main__":
 
 
     
-    # commenttokens = comment["commenttokens"]   
+    # commenttokens = comment["commenttokens"]   iss
     # commenttokens = list(comment.select('commenttokens').toPandas()['commenttokens'])
     # issuetokens = list(issue.select("issuetokens").toPandas()['issuetokens'])
-    comment.write.save("commentokens.parquet")
-    issue.write.save("issuetokens.parquet")
+    comment.write.save("commentokens_filterchinese.parquet")
+    issue.write.save("issuetokens_filterchinese.parquet")
     
     # emojitokencnt = dict()
     # for token in issuetokens:
