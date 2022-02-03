@@ -32,11 +32,11 @@ from buildgraph import emoji_entries_construction, construct_regex
 
 def listtores(tokens):
     ans = []
-    if len(tokens) == 1:
+    if len(tokens['commenttokens']) == 1:
         return []
     else:
-        for i in range(len(tokens) - 1):
-            ans.append((tokens[0], tokens[i]))
+        for i in range(len(tokens['commenttokens']) - 1):
+            ans.append((tokens['commenttokens'][0], tokens['commenttokens'][1]))
 
 
 def getTokens():
@@ -51,8 +51,9 @@ def getTokens():
     raw_root = "/user/hangrui/"
     comment = spark.read.parquet("/user/hangrui/commentokens.parquet")
     issue = spark.read.parquet("/user/hangrui/issuetokens.parquet")
-    res1 = comment['commenttokens'].flatMap(listtores).reduceByKey(add)
-    res2 = issue['issuetokens'].flatMap(listtores).reduceByKey(add)
+    res1 = comment.flatMap(listtores).reduceByKey(add)
+
+    # res2 = issue.flatMap(listtores).reduceByKey(add)
     res1.show()
     res2.show()
 
