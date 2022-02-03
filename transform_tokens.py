@@ -55,3 +55,6 @@ def getTokens():
     res2 = issue['issuetokens'].flatMap(listtores).reduceByKey(add)
     res1.show()
     res2.show()
+
+if __name__ == "__main__":
+    getTokens()
