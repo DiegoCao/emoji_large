@@ -329,8 +329,8 @@ if __name__ == "__main__":
     
 
     def tokenfunc(msg):
-        if filterChinese(msg) == False:
-            return []
+        # if filterChinese(msg) == False:
+        #     return []
         
     
         tokens = re.findall(all_emoji_regex, msg)
@@ -352,8 +352,8 @@ if __name__ == "__main__":
     # commenttokens = comment["commenttokens"]   iss
     # commenttokens = list(comment.select('commenttokens').toPandas()['commenttokens'])
     # issuetokens = list(issue.select("issuetokens").toPandas()['issuetokens'])
-    comment.write.save("commentokens_filterchinese_new.parquet")
-    issue.write.save("issuetokens_filterchinese_new.parquet")
+    comment.write.save("commentokens_.parquet")
+    issue.write.save("issuetokens_.parquet")
     
     # emojitokencnt = dict()
     # for token in issuetokens:
@@ -399,4 +399,6 @@ if __name__ == "__main__":
 
     # calculate the token pair frequency first, get the appearance, based on this calculate graph, 
     # issue.write.format("csv").option("header", "true").save("/user/hangrui/conversation/issuemsg")
-    # comment.write.format("csv").option("header", "true").save("/user/hangrui/conversation/commentmsg"
+    # comment.write.format("csv").option("header", "true").save("/user/hangrui/conversation/commentmsg")
+
+
