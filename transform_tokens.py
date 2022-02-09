@@ -51,7 +51,7 @@ def getTokens():
     raw_root = "/user/hangrui/"
     comment = spark.read.parquet("/user/hangrui/commentokens.parquet")
     issue = spark.read.parquet("/user/hangrui/issuetokens.parquet")
-    res1 = comment.rdd.map().flatMap(listtores).reduceByKey(add)
+    res1 = comment.rdd.flatMap(listtores).reduceByKey(add)
 
     # res2 = issue.flatMap(listtores).reduceByKey(add)
     res1.show()
