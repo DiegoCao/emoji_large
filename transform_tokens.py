@@ -4,7 +4,7 @@ import pandas
 import re
 import langdetect
 import io
-
+from operator import add
 import nltk
 from nltk.corpus import stopwords
 
