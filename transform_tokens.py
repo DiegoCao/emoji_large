@@ -30,17 +30,22 @@ STOPWORDS = set(stopwords.words('english'))
 # import enchant
 from buildgraph import emoji_entries_construction, construct_regex
 
-def listtores(tokens):
+def listtores(row):
     ans = []
-    print(tokens)
-    if len(tokens['commenttokens']) == 1:
+    # print(tokens)
+    row.commenttokens
+
+    if len(row['commenttokens']) == 1:
         return []
 
-    for i in range(len(tokens['commenttokens']) - 1):
+    for i in range(len(['commenttokens']) - 1):
         ans.append((tokens['commenttokens'][i][0], tokens['commenttokens'][i][1]))
+    
+    return ans
 
 def listtotry(tokens):
-    print(tokens)
+    # print(tokens)
+    tokens = [2]
     return tokens
 
 def getTokens():
