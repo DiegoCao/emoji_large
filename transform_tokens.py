@@ -8,6 +8,7 @@ from operator import add
 import nltk
 from nltk.corpus import stopwords
 
+from 
 from collections import namedtuple, Counter
 from langdetect import detect
 
@@ -51,6 +52,9 @@ def getTokens():
     raw_root = "/user/hangrui/"
     comment = spark.read.parquet("/user/hangrui/commentokens.parquet")
     issue = spark.read.parquet("/user/hangrui/issuetokens.parquet")
+    issue.show()
+
+    comment.show()
     res1 = comment.rdd.flatMap(listtores).reduceByKey(add)
 
     dfres1 = res1.toDF()
