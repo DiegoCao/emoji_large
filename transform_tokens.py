@@ -34,9 +34,9 @@ def listtores(tokens):
     ans = []
     if len(tokens['commenttokens']) == 1:
         return []
-    else:
-        for i in range(len(tokens['commenttokens']) - 1):
-            ans.append((tokens['commenttokens'][0], tokens['commenttokens'][1]))
+
+    for i in range(len(tokens['commenttokens']) - 1):
+        ans.append((tokens['commenttokens'][i][0], tokens['commenttokens'][i][1]))
 
 
 def getTokens():
