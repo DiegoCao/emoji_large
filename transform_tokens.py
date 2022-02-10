@@ -39,6 +39,10 @@ def listtores(tokens):
     for i in range(len(tokens['commenttokens']) - 1):
         ans.append((tokens['commenttokens'][i][0], tokens['commenttokens'][i][1]))
 
+def listtotry(tokens):
+    ans = []
+    print(tokens)
+    return tokens[0]
 
 def getTokens():
     emoji_entries = emoji_entries_construction()
@@ -58,7 +62,7 @@ def getTokens():
     commentrdd = comment.rdd
     print(commentrdd.take(5))
 
-    res1 = comment.rdd.flatMap(listtores).reduceByKey(add)
+    res1 = comment.rdd.flatMap(listtotry).reduceByKey(add)
     print(res1.take(5))
     # dfres1 = res1.toDF()
     # res2 = issue.flatMap(listtores).reduceByKey(add)
