@@ -32,6 +32,7 @@ from buildgraph import emoji_entries_construction, construct_regex
 
 def listtores(tokens):
     ans = []
+    print(tokens)
     if len(tokens['commenttokens']) == 1:
         return []
 
@@ -57,7 +58,7 @@ def getTokens():
     commentrdd = comment.rdd
     print(commentrdd.take(5))
 
-    # res1 = comment.rdd.flatMap(listtores).reduceByKey(add)
+    res1 = comment.rdd.flatMap(listtores).reduceByKey(add)
 
     # dfres1 = res1.toDF()
     # res2 = issue.flatMap(listtores).reduceByKey(add)
