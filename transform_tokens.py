@@ -59,7 +59,7 @@ def getTokens():
     print(commentrdd.take(5))
 
     res1 = comment.rdd.flatMap(listtores).reduceByKey(add)
-
+    print(res1.take(5))
     # dfres1 = res1.toDF()
     # res2 = issue.flatMap(listtores).reduceByKey(add)
     # res1.show()
