@@ -54,7 +54,7 @@ def getTokens():
     res1 = comment.rdd.flatMap(listtores).reduceByKey(add)
 
     # res2 = issue.flatMap(listtores).reduceByKey(add)
-    res1.show()
+    # res1.show()
     # res2.show()
 
 if __name__ == "__main__":
