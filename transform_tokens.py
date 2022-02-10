@@ -8,7 +8,6 @@ from operator import add
 import nltk
 from nltk.corpus import stopwords
 
-from 
 from collections import namedtuple, Counter
 from langdetect import detect
 
