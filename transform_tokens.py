@@ -55,7 +55,7 @@ def getTokens():
 
     comment.show()
     commentrdd = comment.rdd
-    commentrdd.take(5).foreach(println)
+    print(commentrdd.take(5))
 
     # res1 = comment.rdd.flatMap(listtores).reduceByKey(add)
 
