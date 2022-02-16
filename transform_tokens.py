@@ -32,8 +32,6 @@ from buildgraph import emoji_entries_construction, construct_regex
 
 def listtores(row):
     ans = []
-    # print(tokens)
-    # row.commenttokens
 
     if len(row['commenttokens']) == 1:
         return []
@@ -44,7 +42,6 @@ def listtores(row):
     return ans
 
 def listtotry(tokens):
-    # print(tokens)
     tokens = [2]
     return tokens
 

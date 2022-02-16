@@ -261,7 +261,6 @@ def getPair(lis):
     for idx in range(0, len(lis) - 1):
         pairs.append(lis[idx], lis[idx+1])
     
-    
     return pairs
 
 
