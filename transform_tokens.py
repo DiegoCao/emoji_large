@@ -59,11 +59,12 @@ def getTokens():
     issue = spark.read.parquet("/user/hangrui/issuetokens.parquet")
     issue.show()
 
-    comment.show()
+    comment['comments'].show()
+    
     commentrdd = comment.rdd
     print(commentrdd.take(5))
 
-    res1 = commentrdd.map(lambda x:[x]).reduceByKey(add)
+    res1 = commentrdd.map(lambda x:x).reduceByKey(add)
     print(res1.take(5))
     # dfres1 = res1.toDF()
     # res2 = issue.flatMap(listtores).reduceByKey(add)
