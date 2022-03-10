@@ -142,7 +142,6 @@ def construct_regex(emoji_entries):
     regexword = r'\w+'
     
     multi_codepoint_emoji_sorted.append(regexword)
-
     # join with a "|" to function as an "or" in the regex
     multi_codepoint_emoji_joined = '|'.join(multi_codepoint_emoji_sorted)
     single_codepoint_emoji = []
@@ -206,7 +205,7 @@ def buildG(tokenslist, regex, G, emojicntdict):
     """
         Only consider the one within emoji usage
     """
-    
+    # nx.set_node_attributes
     for tokens in tokenslist:
         msg = tokens[1:-1]
         if filterChinese(msg) == False:
@@ -219,14 +218,21 @@ def buildG(tokenslist, regex, G, emojicntdict):
                 idx = 0
                 if token not in G.nodes():
                     G.add_node(token)
-                for w in window:
-                    if (idx == WINSIZE):
+                    G.nodes[token]['cnt'] = 1
+                else:
+                    G.nodes[token]['cnt'] += 1
+                for id_, w in enumerate(window):
+                    # if (idx == WINSIZE):
+                    if id_ == idx:
                         continue
-                    idx += 1
+                    # idx += 1
                     if filterChinese(w) == False or w in STOPWORDS:
                         continue
                     if w not in G.nodes():
                         G.add_node(w)
+                        G.nodes[w]['cnt'] = 1
+                    else:
+                        G.nodes[w]['cnt'] += 1
                     if G.has_edge(w, token):
                         # data = G.get_edge_data()
                         G[w][token]["weight"] += 1
@@ -277,8 +283,8 @@ if __name__ == "__main__":
     spark = SparkSession(sc)
     spark.sparkContext.setLogLevel('WARN')
     raw_root = "/user/hangrui/"
-    df_old = spark.read.parquet("/user/hangrui/2018_month_new.parquet")
-    df = spark.read.parquet("/user/hangrui/2018_month_new.parquet")
+    df_old = spark.read.parquet("/user/hangrui/2018_day_new.parquet")
+    df = spark.read.parquet("/user/hangrui/2018_day_new.parquet")
     # df_old = spark.read.parquet("/user/hangrui/2018_day_new.parquet")
     # df = spark.read.parquet("/user/hangrui/2018_day_new.parquet")
     print('the df head is ', df.head())
@@ -382,8 +388,6 @@ if __name__ == "__main__":
                 emojitokencnt[t] += 1 
 
     UDK = 0     
-    # print('the emoji token frequency dict is :', emojitokencnt)
-    # print(emojitokencnt)
     pickle.dump(emojitokencnt, open("emoji_freq_month1.pck", "wb"))
     pickle.dump(commenttokens, open("commenttokensmonth1.pck","wb"))
     pickle.dump(issuetokens, open("issuetokensmonth1.pck", "wb"))
@@ -392,8 +396,7 @@ if __name__ == "__main__":
     
     buildG(commenttokens, all_emoji_regex, G, emojitokencnt)
     buildG(issuetokens,all_emoji_regex, G, emojitokencnt)
-
-    pickle.dump(G, open("token_graph_month1.pck", "wb"))
+    pickle.dump(G, open("token_graph_day1_include_words.pck", "wb"))
     print(G.nodes)
 
     # calculate the token pair frequency first, get the appearance, based on this calculate graph, 
