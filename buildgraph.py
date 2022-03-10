@@ -283,8 +283,8 @@ if __name__ == "__main__":
     spark = SparkSession(sc)
     spark.sparkContext.setLogLevel('WARN')
     raw_root = "/user/hangrui/"
-    df_old = spark.read.parquet("/user/hangrui/2018_day_new.parquet")
-    df = spark.read.parquet("/user/hangrui/2018_day_new.parquet")
+    df_old = spark.read.parquet("/user/hangrui/2018_month_new.parquet")
+    df = spark.read.parquet("/user/hangrui/2018_month_new.parquet")
     # df_old = spark.read.parquet("/user/hangrui/2018_day_new.parquet")
     # df = spark.read.parquet("/user/hangrui/2018_day_new.parquet")
     print('the df head is ', df.head())
@@ -396,7 +396,7 @@ if __name__ == "__main__":
     
     buildG(commenttokens, all_emoji_regex, G, emojitokencnt)
     buildG(issuetokens,all_emoji_regex, G, emojitokencnt)
-    pickle.dump(G, open("token_graph_day1_include_words.pck", "wb"))
+    pickle.dump(G, open("token_graph_month1_include_words.pck", "wb"))
     print(G.nodes)
 
     # calculate the token pair frequency first, get the appearance, based on this calculate graph, 
