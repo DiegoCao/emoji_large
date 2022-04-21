@@ -399,6 +399,8 @@ if __name__ == "__main__":
     pickle.dump(G, open("token_graph_month1_include_words.pck", "wb"))
     print(G.nodes)
 
+    
+
     # calculate the token pair frequency first, get the appearance, based on this calculate graph, 
     # issue.write.format("csv").option("header", "true").save("/user/hangrui/conversation/issuemsg")
     # comment.write.format("csv").option("header", "true").save("/user/hangrui/conversation/commentmsg")
