@@ -1,4 +1,5 @@
-
+#!/usr/bin/env python
+# -*- coding: utf-8 -*- 
 import re,io
 from collections import namedtuple, Counter
 from buildgraph import get_ranges
