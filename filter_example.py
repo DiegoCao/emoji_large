@@ -6,26 +6,26 @@ from collections import namedtuple, Counter
 from pyspark.sql import SparkSession
 
 
-def get_ranges(nums):
-    """Reduce a list of integers to tuples of local maximums and minimums.
+    def get_ranges(nums):
+        """Reduce a list of integers to tuples of local maximums and minimums.
 
-    :param nums: List of integers.
-    :return ranges: List of tuples showing local minimums and maximums
-    """
-    nums = sorted(nums)
-    lows = [nums[0]]
-    highs = []
-    if nums[1] - nums[0] > 1:
-        highs.append(nums[0])
-    for i in range(1, len(nums) - 1):
-        if (nums[i] - nums[i - 1]) > 1:
-            lows.append(nums[i])
-        if (nums[i + 1] - nums[i]) > 1:
-            highs.append(nums[i])
-    highs.append(nums[-1])
-    if len(highs) > len(lows):
-        lows.append(highs[-1])
-    return [(l, h) for l, h in zip(lows, highs)]
+        :param nums: List of integers.
+        :return ranges: List of tuples showing local minimums and maximums
+        """
+        nums = sorted(nums)
+        lows = [nums[0]]
+        highs = []
+        if nums[1] - nums[0] > 1:
+            highs.append(nums[0])
+        for i in range(1, len(nums) - 1):
+            if (nums[i] - nums[i - 1]) > 1:
+                lows.append(nums[i])
+            if (nums[i + 1] - nums[i]) > 1:
+                highs.append(nums[i])
+        highs.append(nums[-1])
+        if len(highs) > len(lows):
+            lows.append(highs[-1])
+        return [(l, h) for l, h in zip(lows, highs)]
 	
 
 def emoji_entries_construction():

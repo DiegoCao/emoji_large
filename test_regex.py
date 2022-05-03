@@ -2,9 +2,30 @@
 # -*- coding: utf-8 -*- 
 import re,io
 from collections import namedtuple, Counter
-from buildgraph import get_ranges
 
 regexword = r'\w+'
+
+def get_ranges(nums):
+    """Reduce a list of integers to tuples of local maximums and minimums.
+
+    :param nums: List of integers.
+    :return ranges: List of tuples showing local minimums and maximums
+    """
+    nums = sorted(nums)
+    lows = [nums[0]]
+    highs = []
+    if nums[1] - nums[0] > 1:
+        highs.append(nums[0])
+    for i in range(1, len(nums) - 1):
+        if (nums[i] - nums[i - 1]) > 1:
+            lows.append(nums[i])
+        if (nums[i + 1] - nums[i]) > 1:
+            highs.append(nums[i])
+    highs.append(nums[-1])
+    if len(highs) > len(lows):
+        lows.append(highs[-1])
+    return [(l, h) for l, h in zip(lows, highs)]
+
 def emoji_entries_construction():
     with io.open('emoji-test.txt', 'rt', encoding="utf8") as file:
         emoji_raw = file.read()
@@ -97,7 +118,14 @@ def construct_regex(emoji_entries):
     emoji_dict = {x.emoji: x for x in emoji_entries}
     return all_emoji_regex, emoji_dict
 
-import pickle 
-res = pickle.load(open("emoji_freq_month1.pck", "rb"))
-for key, val in res.items():
-    print(key)
+
+
+# import pickle 
+# res = pickle.load(open("emoji_freq_month1.pck", "rb"))
+# for key, val in res.items():
+#     print(key)
+
+emoji_entries = emoji_entries_construction()
+all_emoji_regex, emoji_dict = construct_regex(emoji_entries)
+
+print(re.findall(all_emoji_regex, "asdf sdf🦐"))

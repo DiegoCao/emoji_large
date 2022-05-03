@@ -368,10 +368,10 @@ if __name__ == "__main__":
             # print(t)
             t = t.lower()
             
-            if is_emoji(t):
-                if t not in emojitokencnt:
-                    emojitokencnt[t] = 0
-                emojitokencnt[t] +=1 
+            # if is_emoji(t):
+            if t not in emojitokencnt:
+                emojitokencnt[t] = 0
+            emojitokencnt[t] +=1 
     
     for token in commenttokens:
         # print(token)
@@ -382,13 +382,13 @@ if __name__ == "__main__":
         for t in token:
             # print(t)
             t = t.lower()
-            if is_emoji(t):
-                if t not in emojitokencnt:
-                    emojitokencnt[t] = 0
-                emojitokencnt[t] += 1 
-
+            # if is_emoji(t):
+            if t not in emojitokencnt:
+                emojitokencnt[t] = 0
+            emojitokencnt[t] += 1 
     UDK = 0     
-    pickle.dump(emojitokencnt, open("emoji_freq_month1.pck", "wb"))
+    
+    pickle.dump(emojitokencnt, open("all_freq_month1.pck", "wb"))
     pickle.dump(commenttokens, open("commenttokensmonth1.pck","wb"))
     pickle.dump(issuetokens, open("issuetokensmonth1.pck", "wb"))
 
